@@ -20,5 +20,5 @@ C:\Users\dhaltuch\source\repos\FitnessCenter\FitnessCenter\obj\Debug\FitnessCent
 C:\Users\dhaltuch\source\repos\FitnessCenter\FitnessCenter\obj\Debug\FitnessCenter.csproj.CoreCompileInputs.cache
 C:\Users\dhaltuch\source\repos\FitnessCenter\FitnessCenter\obj\Debug\FitnessCenter.dll
 C:\Users\dhaltuch\source\repos\FitnessCenter\FitnessCenter\obj\Debug\FitnessCenter.pdb
-C:\Users\dhaltuch\source\repos\FitnessCenter\FitnessCenter\bin\DataAccess1.dll
-C:\Users\dhaltuch\source\repos\FitnessCenter\FitnessCenter\bin\DataAccess1.pdb
+C:\Users\dhaltuch\source\repos\FitnessCenter\FitnessCenter\bin\DataAccess.dll
+C:\Users\dhaltuch\source\repos\FitnessCenter\FitnessCenter\bin\DataAccess.pdb

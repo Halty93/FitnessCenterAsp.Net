@@ -7,8 +7,8 @@
     <ProjectGuid>{F913DE86-9BAF-47B0-82C2-1EEFA338D00C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DataAccess1</RootNamespace>
-    <AssemblyName>DataAccess1</AssemblyName>
+    <RootNamespace>DataAccess</RootNamespace>
+    <AssemblyName>DataAccess</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -42,6 +42,12 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="Model\Activity.cs" />
+    <Compile Include="Model\Address.cs" />
+    <Compile Include="Model\Reservation.cs" />
+    <Compile Include="Model\Room.cs" />
+    <Compile Include="Model\Term.cs" />
+    <Compile Include="Model\Trainer.cs" />
+    <Compile Include="Model\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

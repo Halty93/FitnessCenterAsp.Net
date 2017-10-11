@@ -1,7 +1,29 @@
-﻿
+﻿@using DataAccess.Model
+@model List<Activity>
 @{
     ViewBag.Title = "Index";
 }
 
 <h1>Druhy Aktivit</h1>
 
+<table class="table table-bordered table-bordered">
+    <thead>
+        <tr>
+            <td>Název</td>
+            <td>Obtížnost</td>
+            <td>Popis</td>
+            <td>Založil</td>
+        </tr>
+    </thead>
+    <tbody>
+            @foreach (Activity act in Model)
+            {
+                <tr>
+                    <td>@act.Name</td>
+                    <td>@act.Difficultness</td>
+                    <td>@act.Description</td>
+                    <td>Autor kurzu</td>
+                </tr>
+            }
+    </tbody>
+</table>
