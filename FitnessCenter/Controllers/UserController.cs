@@ -6,10 +6,9 @@ using System.Web.Mvc;
 
 namespace FitnessCenter.Controllers
 {
-    public class HomeController : Controller
+    public class UserController : Controller
     {
-        // GET: Home
-        //vyuzit sekce a modely
+        // GET: User
         public ActionResult Index()
         {
             return View();
