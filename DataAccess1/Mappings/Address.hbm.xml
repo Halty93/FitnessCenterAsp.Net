@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="DataAccess" namespace="DataAccess.Model">
+
+  <class name="Address" table ="Address">
+    <id name="Id" column="id">
+      <generator class="native" />
+    </id>
+    <property name="Town" column="town"/>
+    <property name="Street" column="street"/>
+    <property name="StreetNumber" column="street_number" />
+    <property name="Zip" column="zip" />
+    <property name="Country" column="country" />
+  </class>
+
+</hibernate-mapping>

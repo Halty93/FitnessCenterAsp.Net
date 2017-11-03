@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="DataAccess" namespace="DataAccess.Model">
+
+  <class name="Reservation" table ="Reservation">
+    <id name="Id" column="id">
+      <generator class="native" />
+    </id>
+    <property name="ReservationTime" column="reservation_time"/>
+    <many-to-one name="Term" column="term_id" foreign-key="term_id"/>
+    <many-to-one name="User" column="user_id" foreign-key="user_id"/>
+  </class>
+
+</hibernate-mapping>

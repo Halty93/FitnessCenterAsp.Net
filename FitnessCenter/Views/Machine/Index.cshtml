@@ -1,0 +1,53 @@
+﻿@using DataAccess.Model
+@model IList<Machine>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Posilovací stroje</h2>
+
+@foreach (Machine m in Model)
+{
+    <div class="col-sm-2 text-center" style="padding: 5px 0">
+        @if (m.SmallImageName != null)
+        {
+            <img src="~/Uploads/Machine/@m.SmallImageName" alt="Fotografie stroje @m.Name" />
+        }
+        else
+        {
+            <img src="~/Uploads/NoPicture.png" alt="Fotografie není k dispozici" />
+        }
+    </div>
+
+    <div class="col-sm-10">
+        <table class="table-responsive table-condensed">
+            <thead>
+                <tr>
+                    <th>
+                        @m.Name
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Poslední kontrola</td>
+                    <td>@m.LastCheck</td>
+                </tr>
+                <tr>
+                    <td>Následující kontrola</td>
+                    <td>@m.NextCheck</td>
+                </tr>
+                <tr>
+                    <td>Popis</td>
+                    <td>@m.Description</td>
+                </tr>
+                <tr>
+                    <td>Stav stroje</td>
+                    <td>@m.Status</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
+<div class="clearfix"></div>
+<a href="@Url.Action("Create", "Machine")" class="btn btn-primary">Vytvořit místnost</a>

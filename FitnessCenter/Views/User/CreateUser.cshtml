@@ -1,0 +1,63 @@
+﻿@model DataAccess.Model.User
+@{
+    ViewBag.Title = "Registrace";
+}
+
+<h2>Registrace</h2>
+
+@Html.ValidationSummary()
+
+@using (Html.BeginForm("AddUser", "User", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+{
+    <div class="form-group">
+        @Html.LabelFor(x => x.Login, "Login")
+        @Html.TextBoxFor(x => x.Login, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.Login)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.Password, "Heslo")
+        @Html.TextBoxFor(x => x.Password, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.Password)
+    </div>        
+    <div class="form-group">
+        @Html.LabelFor(x => x.ConfirmPassword, "Potvrzení hesla")
+        @Html.TextBoxFor(x => x.ConfirmPassword, new { @class = "form-control " })
+        @Html.ValidationMessageFor(x => x.ConfirmPassword)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.Name, "Jméno")
+        @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.Name)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.Surname, "Příjmení")
+        @Html.TextBoxFor(x => x.Surname, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.Surname)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.Birthdate, "Datum narození")
+        @Html.TextBoxFor(x => x.Birthdate, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.Birthdate)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.BirthNumber, "Rodné číslo (bez lomítka)")
+        @Html.TextBoxFor(x => x.BirthNumber, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.BirthNumber)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.Email, "Email")
+        @Html.TextBoxFor(x => x.Email, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.Email)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.PhoneNumber, "Telefon")
+        @Html.TextBoxFor(x => x.PhoneNumber, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.PhoneNumber)
+    </div>
+    <div class="form-group">
+        <input type="file" class="btn btn-default" name ="picture"/>
+    </div>
+
+    //přidat adresu
+    <button type="submit" class="btn btn-primary">Registrovat</button>
+}

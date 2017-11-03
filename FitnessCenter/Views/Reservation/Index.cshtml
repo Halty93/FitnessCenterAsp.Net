@@ -1,7 +1,40 @@
-﻿
+﻿@using DataAccess.Model
+@model IList<Reservation>
 @{
     ViewBag.Title = "Rezervace";
 }
 
 <h2>Rezervace</h2>
 
+<table class="table table-bordered table-hover table-responsive table-condensed">
+    <thead>
+        <tr>
+            <th style="width: 4%; text-align: center">Id</th>
+            <th>Jméno uživatele</th>
+            <th>Aktivita</th>
+            <th>Začátek termínu</th>
+            <th>Konec termínu</th>
+            <th>Cena</th>
+            @*<th>Akce</th>*@
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Reservation r in Model)
+        {
+            <tr>
+                <td>
+                    @r.User.Name + " " + r.User.Surname
+                </td>
+                <td>
+                    @r.Term.Activity.Name
+                </td>
+                <td>@r.Term.StartTerm.ToString("d/M/yyyy H:mm")</td>
+                <td>@r.Term.EndTerm.ToString("d/M/yyyy H:mm")</td>
+                <td>@r.Term.Activity.Price</td>
+                @*<td class="text-center">
+                @Html.ActionLink("Zrušit rezervaci", "Delete", new { id = r.Id }, new { @class = "glyphicon glyphicon-trash btn btn-danger" })
+                </td>*@
+            </tr>
+        }
+    </tbody>
+</table>

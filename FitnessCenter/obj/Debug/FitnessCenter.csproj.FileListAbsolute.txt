@@ -20,5 +20,16 @@ C:\Users\dhaltuch\source\repos\FitnessCenter\FitnessCenter\obj\Debug\FitnessCent
 C:\Users\dhaltuch\source\repos\FitnessCenter\FitnessCenter\obj\Debug\FitnessCenter.csproj.CoreCompileInputs.cache
 C:\Users\dhaltuch\source\repos\FitnessCenter\FitnessCenter\obj\Debug\FitnessCenter.dll
 C:\Users\dhaltuch\source\repos\FitnessCenter\FitnessCenter\obj\Debug\FitnessCenter.pdb
+C:\Users\dhaltuch\source\repos\FitnessCenter\FitnessCenter\bin\NHibernate.dll
+C:\Users\dhaltuch\source\repos\FitnessCenter\FitnessCenter\bin\Remotion.Linq.dll
+C:\Users\dhaltuch\source\repos\FitnessCenter\FitnessCenter\bin\Remotion.Linq.EagerFetching.dll
+C:\Users\dhaltuch\source\repos\FitnessCenter\FitnessCenter\bin\Antlr3.Runtime.dll
+C:\Users\dhaltuch\source\repos\FitnessCenter\FitnessCenter\bin\NHibernate.xml
+C:\Users\dhaltuch\source\repos\FitnessCenter\FitnessCenter\bin\Remotion.Linq.xml
+C:\Users\dhaltuch\source\repos\FitnessCenter\FitnessCenter\bin\Remotion.Linq.EagerFetching.xml
+C:\Users\dhaltuch\source\repos\FitnessCenter\FitnessCenter\bin\Antlr3.Runtime.xml
+C:\Users\dhaltuch\source\repos\FitnessCenter\FitnessCenter\bin\Iesi.Collections.dll
+C:\Users\dhaltuch\source\repos\FitnessCenter\FitnessCenter\bin\Iesi.Collections.xml
 C:\Users\dhaltuch\source\repos\FitnessCenter\FitnessCenter\bin\DataAccess.dll
 C:\Users\dhaltuch\source\repos\FitnessCenter\FitnessCenter\bin\DataAccess.pdb
+C:\Users\dhaltuch\source\repos\FitnessCenter\FitnessCenter\bin\DataAccess.dll.config

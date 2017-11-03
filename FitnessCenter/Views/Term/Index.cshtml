@@ -1,7 +1,40 @@
-﻿
+﻿@using DataAccess.Model
+@model IList<Term>
 @{
     ViewBag.Title = "Termíny";
 }
 
 <h2>Termíny</h2>
 
+<table class="table table-bordered table-hover table-responsive table-condensed">
+    <thead>
+    <tr>
+        <th>Aktivita</th>
+        <th>Začátek</th>
+        <th>Konec</th>
+        <th>Volných míst</th>
+        <th>Opakovatelný kurz</th>
+        <th>Cena</th>
+           @* <th>Akce</th>*@
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (Term t in Model)
+    {
+        <tr>
+            <td>@t.Activity.Name</td>
+            <td>@t.StartTerm</td>
+            <td>@t.EndTerm</td>
+            <td>@t.Room.MaxCapacity - @t.Capacity</td>
+            <td>@t.IsRepeatable</td>
+            <td>@t.Activity.Price</td>
+               @* <td class="text-center">
+        @Html.ActionLink(" ", "Delete", new { id = t.Id }, new { @class = "glyphicon glyphicon-trash btn btn-danger" })
+        @Html.ActionLink(" ", "Update", new { id = t.Id }, new { @class = "glyphicon glyphicon-trash btn btn-danger" })
+    </td>*@
+        </tr>
+    }
+    </tbody>
+</table>
+<div class ="clearfix"></div>           
+<a href="@Url.Action("Create","Term")" class="btn btn-primary">Vytvořit termín</a>
