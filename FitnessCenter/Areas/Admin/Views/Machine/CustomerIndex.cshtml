@@ -1,0 +1,107 @@
+﻿@using DataAccess.Model
+@model IList<Machine>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Posilovací stroje</h2>
+<div class="panel">
+    @*navigace pro kategorie*@
+    <div class="panel-body" role="tabpanel">
+        <ul class="nav nav-pills nav-justified">
+            <li role="presentation" class="@(ViewBag.CurrentStatus == null ? "active" : "")">
+                <a href="@Url.Action("Index", "Machine", new { page = ViewBag.CurrentPage, item = ViewBag.Items })">Všichni uživatelé</a>
+                @*@Ajax.ActionLink(Convert.ToString("Všichni uživatelé"), "Index", new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })*@
+            </li>
+
+            <li role="presentation" class="@(ViewBag.CurrentStatus == "V pořádku" ? "active" : "")">
+                <a href="@Url.Action("Status", "Machine", new { status = "V pořádku", page = ViewBag.CurrentPage, item = ViewBag.Items })">V pořádku</a>
+                @*@Ajax.ActionLink(r.Name, "Role", new { id = r.Id, page = ViewBag.CurrentPage, item = ViewBag.Items }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })*@
+            </li>
+
+            <li role="presentation" class="@(ViewBag.CurrentStatus == "Poškozený" ? "active" : "")">
+                <a href="@Url.Action("Status", "Machine", new { status = "Poškozený", page = ViewBag.CurrentPage, item = ViewBag.Items })">Poškozený</a>
+                @*@Ajax.ActionLink(r.Name, "Role", new { id = r.Id, page = ViewBag.CurrentPage, item = ViewBag.Items }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })*@
+            </li>
+        </ul>
+    </div>
+</div>
+
+@foreach (Machine m in Model)
+{
+    <div class="col-sm-2 text-center" style="padding: 5px 0">
+        @if (m.SmallImageName != null)
+        {
+            <img src="~/Uploads/Machine/@m.SmallImageName" alt="Fotografie stroje @m.Name" />
+        }
+        else
+        {
+            <img src="~/Uploads/NoPicture.png" alt="Fotografie není k dispozici" />
+        }
+    </div>
+
+    <div class="col-sm-10">
+        <table class="table-responsive table-condensed">
+            <thead>
+                <tr>
+                    <th>
+                        @m.Name
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Poslední kontrola</td>
+                    <td>@m.LastCheck</td>
+                </tr>
+                <tr>
+                    <td>Následující kontrola</td>
+                    <td>@m.NextCheck</td>
+                </tr>
+                <tr>
+                    <td>Popis</td>
+                    <td>@m.Description</td>
+                </tr>
+                <tr>
+                    <td>Stav stroje</td>
+                    <td>@m.Status</td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.ActionLink("Závada na stroji", "EditFault", new { id = m.Id }, new { @class = "btn btn-default" })
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
+<div class="dropdown navbar-right">
+    <label style="font-size: 10px">Počet záznamů na stránce</label>
+    <button class="btn btn-xs btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        @ViewBag.Items
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+        @for (int i = 5; i <= 20; i *= 2)
+        {
+            <li class="@(ViewBag.Items == i ? "active" : "") text-right">
+                <a href="@Url.Action("Index", "Machine", new {page = ViewBag.CurrentPage, item = i})">@i</a>
+            </li>
+        }
+    </ul>
+</div>
+
+<div class="navbar-left">
+    @if (ViewBag.Pages != null)
+    {
+        <ul class="pagination pagination-sm">
+            @for (int i = 1; i <= ViewBag.Pages; i++)
+            {
+                <li class="@(ViewBag.CurrentPage == i ? "active" : "")">
+                    <a href="@Url.Action("Index", "Machine", new {page = i, item = ViewBag.Items})">@i</a>
+                </li>
+            }
+        </ul>
+    }
+</div>
+<div class="clearfix"></div>

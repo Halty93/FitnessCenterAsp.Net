@@ -16,7 +16,7 @@ namespace DataAccess.Model
         [Required(ErrorMessage = "Název stroje je povinný údaj")]
         public virtual string Name { get; set; }
 
-        public virtual User Repairman { get; set; }
+        public virtual FitnessUser Repairman { get; set; }
 
         [Required(ErrorMessage = "Datum poslední revize je povinný údaj")]
         [DataType(DataType.Date)]
@@ -35,7 +35,7 @@ namespace DataAccess.Model
         [AllowHtml]
         public virtual string Description { get; set; }
 
-        public virtual User FaultUser { get; set; }
+        public virtual FitnessUser FaultUser { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd.mm.yyyy}")]
@@ -46,5 +46,16 @@ namespace DataAccess.Model
         public virtual string SmallImageName { get; set; }
 
         public virtual string BigImageName { get; set; }
+
+        public static IList<string> StatsList
+        {
+            get
+            {
+                IList<string> stats = new List<string>();
+                stats.Add("V pořádku");
+                stats.Add("Poškozený");
+                return stats;
+            }
+        }
     }
 }

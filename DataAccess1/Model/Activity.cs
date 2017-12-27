@@ -30,25 +30,7 @@ namespace DataAccess.Model
 
         public virtual string BigImageName { get; set; }
 
-        public virtual User Author { get; set; }
+        public virtual FitnessUser Author { get; set; }
 
-        //public static List<Activity> acts = null;
-
-        //public static List<Activity> FakeList
-        //{
-        //    get
-        //    {
-        //        if (acts == null)
-        //        {
-        //            acts = new List<Activity>();
-        //            acts.Add(new Activity() { Id = 1, Name = "Kruhový trénink", Description = "Pro lidi, kteri chteji zhubnout", Difficultness = 3 });
-        //            acts.Add(new Activity() { Id = 2, Name = "Trampoliny", Description = "Skupinove skakani na trampolinach", Difficultness = 2 });
-        //            acts.Add(new Activity() { Id = 30, Name = "TRX", Description = "Cviceni s TRX", Difficultness = 6 });
-                    
-        //        }
-        //        return acts;
-
-        //    }
-        //}
     }
 }

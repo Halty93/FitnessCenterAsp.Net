@@ -1,0 +1,36 @@
+﻿@using DataAccess.Dao
+@using DataAccess.Model
+@model IList<Term>
+@{
+    ViewBag.Title = "Termíny";
+    TermDao tDao = new TermDao();
+}
+
+<h2>Termíny</h2>
+
+<table class="table table-bordered table-hover table-responsive table-condensed">
+    <thead>
+        <tr>
+            <th>Aktivita</th>
+            <th>Začátek</th>
+            <th>Konec</th>
+            <th>Volných míst</th>
+            <th>Opakovatelný kurz</th>
+            <th>Cena</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Term t in Model)
+        {
+            <tr>
+                <td>@Html.ActionLink(@t.Activity.Name,"Add","Reservation", new { termId = t.Id })    </td>
+                <td>@t.StartTerm</td>
+                <td>@t.EndTerm</td>
+                <td>@t.Capacity - @tDao.GetActualCapacity(t)</td>
+                <td>@t.Activity.Price</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="clearfix"></div>
+<a href="@Url.Action("Create","Term")" class="btn btn-primary">Vytvořit termín</a>

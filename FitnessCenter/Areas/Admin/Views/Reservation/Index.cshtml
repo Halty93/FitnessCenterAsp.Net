@@ -1,0 +1,83 @@
+﻿@using DataAccess.Model
+@model IList<Reservation>
+@{
+    ViewBag.Title = "Rezervace";
+}
+
+<h2>Rezervace</h2>
+<div class="row">
+    @*vyhledávač*@
+    <div class="col-lg-5 panel-body">
+        @using (Html.BeginForm("Search", "Reservation"))
+        {
+            <div class="input-group">
+                <input type="text" class="form-control" id="search" placeholder="Hledat..." name="phrase">
+                <span class="input-group-btn">
+                    <button class="btn btn-default " type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                </span>
+            </div>
+        }
+    </div>
+</div>
+<table class="table table-bordered table-hover table-responsive table-condensed">
+    <thead>
+        <tr>
+            <th style="width: 4%; text-align: center">Id</th>
+            <th>Jméno uživatele</th>
+            <th>Aktivita</th>
+            <th>Začátek termínu</th>
+            <th>Konec termínu</th>
+            <th>Cena</th>
+            @*<th>Akce</th>*@
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Reservation r in Model)
+        {
+            <tr>
+                <td>
+                    @r.User.Name + " " + r.User.Surname
+                </td>
+                <td>
+                    @r.Term.Activity.Name
+                </td>
+                <td>@r.Term.StartTerm.ToString("d/M/yyyy H:mm")</td>
+                <td>@r.Term.EndTerm.ToString("d/M/yyyy H:mm")</td>
+                <td>@r.Term.Activity.Price</td>
+                @*<td class="text-center">
+                    @Html.ActionLink("Zrušit rezervaci", "Delete", new { id = r.Id }, new { @class = "glyphicon glyphicon-trash btn btn-danger" })
+                    </td>*@
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="dropdown navbar-right">
+    <label style="font-size: 10px">Počet záznamů na stránce</label>
+    <button class="btn btn-xs btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        @ViewBag.Items
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+        @for (int i = 5; i <= 20; i *= 2)
+        {
+            <li class="@(ViewBag.Items == i ? "active" : "") text-right">
+                <a href="@Url.Action("Index", "Reservation", new {page = ViewBag.CurrentPage, item = i})">@i</a>
+            </li>
+        }
+    </ul>
+</div>
+
+<div class="navbar-left">
+    @if (ViewBag.Pages != null)
+    {
+        <ul class="pagination pagination-sm">
+            @for (int i = 1; i <= ViewBag.Pages; i++)
+            {
+                <li class="@(ViewBag.CurrentPage == i ? "active" : "")">
+                    <a href="@Url.Action("Index", "Reservation", new {page = i, item = ViewBag.Items})">@i</a>
+                </li>
+            }
+        </ul>
+    }
+</div>

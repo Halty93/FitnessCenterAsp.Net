@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -12,13 +13,13 @@ namespace FitnessCenter.Controllers
 {
     public class UserController : Controller
     {
-        // GET: User
-        public ActionResult Index()
-        {
-            UserDao uDao = new UserDao();
-            IList <User> users = uDao.GetAll();
-            return View(users);
-        }
+        // GET: FitnessUser
+        //public ActionResult Index()
+        //{
+        //    UserDao uDao = new UserDao();
+        //    IList<FitnessUser> users = uDao.GetAll();
+        //    return View(users);
+        //}
 
         public ActionResult CreateUser()
         {
@@ -26,58 +27,53 @@ namespace FitnessCenter.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddUser(User user, HttpPostedFileBase picture)
+        public ActionResult AddUser(FitnessUser fitnessUser, HttpPostedFileBase picture)
         {
-            if (ModelState.IsValid)
+            try
             {
-                if (picture != null)
+                if (ModelState.IsValid)
                 {
-                    if (picture.ContentType == "image/jpeg" ||
-                        picture.ContentType == "image/png" ||
-                        picture.ContentType == "image/bmp" ||
-                        picture.ContentType == "image/gif")
+                    if (picture != null)
                     {
-                        Image image = Image.FromStream(picture.InputStream);
-                        Image smallImage = null;
-                        Image bigImage = null;
+                        ImageClass.ImageMethod(picture, "FitnessUser", out string bigImageName, out string smallImageName, out string tempData);
 
-                        if (image.Width > 800 || image.Height > 800)
+                        if (tempData != null)
                         {
-                            bigImage = ImageClass.ScaleImage(image, 800);
-                            smallImage = ImageClass.ScaleImage(image, 200);
+                            TempData["warning"] = tempData;
                         }
-                        else if (image.Width > 200 || image.Height > 200)
-                        {
-                            smallImage = ImageClass.ScaleImage(image, 200);
-                            bigImage = image;
-
-                            TempData["warning"] = "Obrázek pro detail není dostatečně velký.";
-                        }
-                        else
-                        {
-                            TempData["warning"] = "Příliš malý obrázek. Nebylo možné ho přidat k profilu uživatele.";
-                        }
-                        if (smallImage != null)
-                        {
-                            ImageClass.SaveImage(smallImage, "User", out var SIName);
-                            user.SmallImageName = SIName;
-                        }
-                        else if (bigImage != null)
-                        {
-                            ImageClass.SaveImage(bigImage, "User", out var BIName);
-                            user.BigImageName = BIName;
-
-                        }
+                        fitnessUser.BigImageName = bigImageName;
+                        fitnessUser.SmallImageName = smallImageName;
                     }
+                    UserDao uDao = new UserDao();
+                    AddressDao aDao = new AddressDao();
+                    Address a = new Address();
+
+                    fitnessUser.Role = new RoleDao().GetById(399);
+                    a.Country = fitnessUser.Address.Country;
+                    a.Street = fitnessUser.Address.Street;
+                    a.StreetNumber = fitnessUser.Address.StreetNumber;
+                    a.Town = fitnessUser.Address.Town;
+                    a.Zip = fitnessUser.Address.Zip;
+
+                    uDao.Create(fitnessUser);
+                    aDao.Create(a);
                 }
-                //přidat uživatele
+                else
+                {
+                    return View("CreateUser", fitnessUser);
+                }
+                if (TempData["warning"] == null)
+                {
+                    TempData["succes"] = "Registrace proběhla úspěšně.";
+                }
             }
-            else
+            catch (Exception e)
             {
-                return View("CreateUser", user);
+                Console.WriteLine(e);
+                throw;
             }
-            TempData["succes"] = "Registrace proběhla úspěšně.";
-            return RedirectToAction("Index");
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }

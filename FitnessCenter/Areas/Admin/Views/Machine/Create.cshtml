@@ -1,0 +1,35 @@
+﻿@model DataAccess.Model.Machine
+@{
+    ViewBag.Title = "Nový stroj";
+}
+
+<h2>Nový stroj</h2>
+
+@Html.ValidationSummary()
+
+@using (Html.BeginForm("Add", "Machine", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+{
+    <div class="form-group">
+        @Html.LabelFor(x => x.Name, "Název")
+        @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.Name)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.LastCheck, "Poslední kontrola")
+        @Html.TextBoxFor(x => x.LastCheck, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.LastCheck)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.NextCheck, "Následující kontrola")
+        @Html.TextBoxFor(x => x.NextCheck, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.NextCheck)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.Description, "Popis")
+        @Html.TextAreaFor(x => x.Description, new { @class = "form-control description-area" })
+    </div>
+    <div class="form-group">
+        <input type="file" class="btn btn-default" name ="picture"/>
+    </div>
+    <button type="submit" class="btn btn-primary">Přidat stroj</button>
+}

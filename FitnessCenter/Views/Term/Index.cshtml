@@ -1,38 +1,37 @@
-﻿@using DataAccess.Model
+﻿@using DataAccess.Dao
+@using DataAccess.Model
+@using System.Globalization;
 @model IList<Term>
 @{
     ViewBag.Title = "Termíny";
+    TermDao tDao = new TermDao();
 }
 
 <h2>Termíny</h2>
 
-<table class="table table-bordered table-hover table-responsive table-condensed">
+<table class="table table-bordered table-hover table-responsive table-condensed table-striped">
     <thead>
     <tr>
         <th>Aktivita</th>
         <th>Začátek</th>
         <th>Konec</th>
         <th>Volných míst</th>
-        <th>Opakovatelný kurz</th>
         <th>Cena</th>
-           @* <th>Akce</th>*@
     </tr>
     </thead>
     <tbody>
     @foreach (Term t in Model)
     {
-        <tr>
-            <td>@t.Activity.Name</td>
-            <td>@t.StartTerm</td>
-            <td>@t.EndTerm</td>
-            <td>@t.Room.MaxCapacity - @t.Capacity</td>
-            <td>@t.IsRepeatable</td>
-            <td>@t.Activity.Price</td>
-               @* <td class="text-center">
-        @Html.ActionLink(" ", "Delete", new { id = t.Id }, new { @class = "glyphicon glyphicon-trash btn btn-danger" })
-        @Html.ActionLink(" ", "Update", new { id = t.Id }, new { @class = "glyphicon glyphicon-trash btn btn-danger" })
-    </td>*@
-        </tr>
+        if (t.EndTerm >= DateTime.Now)
+        {
+            <tr>
+                <td>@t.Activity.Name</td>
+                <td>@t.StartTerm.ToString("d.M.yyyy H:mm")</td>
+                <td>@t.EndTerm.ToString("d.M.yyyy H:mm")</td>
+                <td>@tDao.GetActualCapacity(t)</td>
+                <td>@t.Activity.Price.ToString("C", new CultureInfo("cs-CZ"))</td>
+            </tr>
+        }
     }
     </tbody>
 </table>

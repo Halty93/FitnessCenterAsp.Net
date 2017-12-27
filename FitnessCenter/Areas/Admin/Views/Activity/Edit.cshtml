@@ -1,0 +1,43 @@
+﻿@model DataAccess.Model.Activity
+@{
+    ViewBag.Title = "Úprava aktivity";
+}
+
+<h2>Úprava aktivity @Model.Name</h2>
+
+@using (Html.BeginForm("Update", "Activity", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(x=>x.Id)
+    @Html.HiddenFor(x => x.BigImageName)
+    @Html.HiddenFor(x => x.SmallImageName)
+    <div class="form-group">
+        @Html.LabelFor(x => x.Name, "Název")
+        @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.Name)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.Difficultness, "Obtížnost")
+        @Html.TextBoxFor(x => x.Difficultness, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.Difficultness)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.Price, "Cena")
+        @Html.TextBoxFor(x => x.Price, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.Price)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.Description, "Popis")
+        @Html.TextAreaFor(x => x.Description, new { @class = "form-control description-area" })
+    </div>
+    <div class="form-group">
+        <input type="file" class="btn btn-default" name="picture" />
+        @if (Model.SmallImageName != null)
+        {
+            <img src="@Url.Content("~/Uploads/Acivity/" + Model.SmallImageName)"/>
+            @Html.ActionLink("Smazat obrázek","DeletePicture","Activity",new{id = Model.Id},new{@class = "btn btn-danger"})
+        }
+    </div>
+
+    <button type="submit" class="btn btn-primary">Upravit aktivitu</button>
+}
+

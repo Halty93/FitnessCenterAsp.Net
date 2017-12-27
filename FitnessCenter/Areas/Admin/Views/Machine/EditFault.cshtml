@@ -1,0 +1,25 @@
+﻿@model DataAccess.Model.Machine
+@{
+    ViewBag.Title = "Nahlášení závady";
+}
+
+<h2>Nahlášení závady na stroji @Model.Name</h2>
+
+@using (Html.BeginForm("UpdateFault", "Machine", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(x => x.Id)
+    @Html.HiddenFor(x => x.Name)
+    @Html.HiddenFor(x => x.Repairman)
+    @Html.HiddenFor(x => x.Description)
+    @Html.HiddenFor(x => x.BigImageName)
+    @Html.HiddenFor(x => x.SmallImageName)
+    @Html.HiddenFor(x => x.LastCheck)
+    @Html.HiddenFor(x => x.NextCheck)
+    
+    <div class="form-group">
+        @Html.LabelFor(x => x.Fault, "Popis závady")
+        @Html.TextAreaFor(x => x.Fault, new { @class = "form-control description-area" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">Přidat závadu</button>
+}

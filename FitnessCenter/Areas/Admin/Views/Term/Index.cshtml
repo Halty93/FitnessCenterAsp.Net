@@ -1,0 +1,62 @@
+﻿@using DataAccess.Dao
+@using DataAccess.Model
+@using System.Globalization;
+@model IList<Term>
+@{
+    ViewBag.Title = "Termíny";
+    TermDao tDao = new TermDao();
+}
+
+<h2>Termíny</h2>
+<div class="panel">
+    @*navigace pro kategorie*@
+    <div class="panel-body" role="tabpanel">
+
+        @if (ViewBag.Roles != null)
+        {
+            <ul class="nav nav-pills nav-justified">
+                <li role="presentation" class="@(ViewBag.CurrentTerm == 1 ? "active" : "")">
+                    <a href="@Url.Action("Index", "Term", new { currentTerms = 1 })">Nadcházející termíny</a>
+                    @*@Ajax.ActionLink(Convert.ToString("Všichni uživatelé"), "Index", new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })*@
+                </li>
+
+                <li role="presentation" class="@(ViewBag.CurrentTerm == 0 ? "active" : "")">
+                    <a href="@Url.Action("Index", "Term", new { currentTerms = 0 })">Uplynulé termíny</a>
+                    @*@Ajax.ActionLink(r.Name, "Role", new { id = r.Id, page = ViewBag.CurrentPage, item = ViewBag.Items }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })*@
+                </li>
+
+            </ul>
+        }
+    </div>
+</div>
+<table class="table table-bordered table-hover table-responsive table-condensed  table-striped">
+    <thead>
+        <tr>
+            <th>Aktivita</th>
+            <th>Začátek</th>
+            <th>Konec</th>
+            <th>Volných míst</th>
+            <th>Cena</th>
+            <th>Akce</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Term t in Model)
+        {
+            <tr>
+                <td>@t.Activity.Name</td>
+                <td>@t.StartTerm.ToString("d.M.yyyy H:mm")</td>
+                <td>@t.EndTerm.ToString("d.M.yyyy H:mm")</td>
+                <td>@tDao.GetActualCapacity(t)</td>
+                <td>@t.Activity.Price.ToString("C", new CultureInfo("cs-CZ"))</td>
+                <td class="text-center">
+                    @Html.ActionLink(" ", "Delete", new { id = t.Id }, new { @class = "glyphicon glyphicon-trash btn btn-danger" })
+                    @Html.ActionLink(" ", "Edit", new { id = t.Id }, new { @class = "glyphicon glyphicon-pencil btn btn-default" })
+                </td>
+            </tr>
+
+        }
+    </tbody>
+</table>
+<div class="clearfix"></div>
+<a href="@Url.Action("Create","Term")" class="btn btn-primary">Vytvořit termín</a>

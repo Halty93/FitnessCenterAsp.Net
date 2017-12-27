@@ -19,6 +19,6 @@ namespace DataAccess.Model
         
         public virtual Term Term { get; set; }
 
-        public virtual User User { get; set; }
+        public virtual FitnessUser User { get; set; }
     }
 }

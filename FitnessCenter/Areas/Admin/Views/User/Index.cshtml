@@ -1,0 +1,74 @@
+﻿@using DataAccess.Model
+@model IList<DataAccess.Model.FitnessUser>
+@{
+    ViewBag.Title = "Uživatelé";
+}
+
+<h2>Uživatelé</h2>
+<a href="@Url.Action("CreateUser","User")" class="btn btn-primary">Registrace</a>
+<div class="row">
+    @*vyhledávač*@
+    <div class="col-lg-5 panel-body">
+        @using (Html.BeginForm("Search", "User"))
+        {
+            <div class="input-group">
+                <input type="text" class="form-control" id="search" placeholder="Hledat..." name="phrase">
+                <span class="input-group-btn">
+                    <button class="btn btn-default " type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                </span>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="panel">
+    @*navigace pro kategorie*@
+    <div class="panel-body" role="tabpanel">
+
+        @if (ViewBag.Roles != null)
+        {
+            <ul class="nav nav-pills nav-justified">
+                <li role="presentation" class="@(ViewBag.CurrentRole == null ? "active" : "")">
+                    <a href="@Url.Action("Index", "User", new { page = ViewBag.CurrentPage, item = ViewBag.Items })">Všichni uživatelé</a>
+                    @*@Ajax.ActionLink(Convert.ToString("Všichni uživatelé"), "Index", new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })*@
+                </li>
+                @foreach (Role r in ViewBag.Roles)
+                {
+                    <li role="presentation" class="@(ViewBag.CurrentRole == r.Id ? "active" : "")">
+                        <a href="@Url.Action("Role", "User", new { id = r.Id, page = ViewBag.CurrentPage, item = ViewBag.Items })">@r.Name</a>
+                        @*@Ajax.ActionLink(r.Name, "Role", new { id = r.Id, page = ViewBag.CurrentPage, item = ViewBag.Items }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })*@
+                    </li>
+                }
+            </ul>
+        }
+    </div>
+</div>
+<div class="dropdown navbar-right">
+    <label style="font-size: 10px">Počet záznamů na stránce</label>
+    <button class="btn btn-xs btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        @ViewBag.Items
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+        @for (int i = 5; i <= 20; i *= 2)
+        {
+            <li class="@(ViewBag.Items == i ? "active" : "") text-right">
+                <a href="@Url.Action("Index", "User", new {page = ViewBag.CurrentPage, item = i})">@i</a>
+            </li>
+        }
+    </ul>
+</div>
+
+<div class="navbar-left">
+    @if (ViewBag.Pages != null)
+    {
+        <ul class="pagination pagination-sm">
+            @for (int i = 1; i <= ViewBag.Pages; i++)
+            {
+                <li class="@(ViewBag.CurrentPage == i ? "active" : "")">
+                    <a href="@Url.Action("Index", "User", new {page = i, item = ViewBag.Items})">@i</a>
+                </li>
+            }
+        </ul>
+    }
+</div>

@@ -1,4 +1,4 @@
-﻿@model DataAccess.Model.User
+﻿@model DataAccess.Model.FitnessUser
 @{
     ViewBag.Title = "Registrace";
 }
@@ -45,9 +45,9 @@
         @Html.ValidationMessageFor(x => x.BirthNumber)
     </div>
     <div class="form-group">
-        @Html.LabelFor(x => x.Email, "Email")
-        @Html.TextBoxFor(x => x.Email, new { @class = "form-control" })
-        @Html.ValidationMessageFor(x => x.Email)
+        @Html.LabelFor(x => x.EmailAddress, "EmailAddress")
+        @Html.TextBoxFor(x => x.EmailAddress, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.EmailAddress)
     </div>
     <div class="form-group">
         @Html.LabelFor(x => x.PhoneNumber, "Telefon")
@@ -55,9 +55,34 @@
         @Html.ValidationMessageFor(x => x.PhoneNumber)
     </div>
     <div class="form-group">
+        @Html.LabelFor(x => x.Address.Country, "Stát")
+        @Html.TextBoxFor(x => x.Address.Country, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.Address.Country)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.Address.Town, "Město")
+        @Html.TextBoxFor(x => x.Address.Town, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.Address.Town)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.Address.Street, "Ulice")
+        @Html.TextBoxFor(x => x.Address.Street, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.Address.Street)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.Address.StreetNumber, "Č.P.")
+        @Html.TextBoxFor(x => x.Address.StreetNumber, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.Address.StreetNumber)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.Address.Zip, "PSČ")
+        @Html.TextBoxFor(x => x.Address.Zip, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.Address.Zip)
+    </div>
+    <div class="form-group">
         <input type="file" class="btn btn-default" name ="picture"/>
     </div>
 
-    //přidat adresu
+
     <button type="submit" class="btn btn-primary">Registrovat</button>
 }

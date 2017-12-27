@@ -10,7 +10,7 @@ namespace FitnessCenter.Class
 {
     public class ImageClass
     {
-        public static Image ScaleImage(Image image, int maxHeight)
+        private static Image ScaleImage(Image image, int maxHeight)
         {
             var ratio = (double)maxHeight / image.Height;
 
@@ -25,18 +25,67 @@ namespace FitnessCenter.Class
             return newImage;
         }
 
-        public static void SaveImage(Image image, string ControllerName, out string imageName)
+        private static void SaveImage(Image image, string controllerName,  out string imageName)
         {
             Bitmap b = new Bitmap(image);
 
             Guid g = Guid.NewGuid();
 
             imageName = g.ToString() + ".jpg";
-            b.Save(HttpContext.Current.Server.MapPath("~/Uploads/"+ ControllerName +"/" + imageName + ".jpg"),ImageFormat.Jpeg);
+            b.Save(HttpContext.Current.Server.MapPath("~/Uploads/" + controllerName + "/" + imageName + ".jpg"),
+                ImageFormat.Jpeg);
 
             b.Dispose();
+
+    }
+
+        public static void ImageMethod(HttpPostedFileBase picture, string controllerName, out string bImageName, out string sImageName, out string tempData)
+        {
+            bImageName = null;
+            sImageName = null;
+            tempData = null;
+
+            if (picture.ContentType == "image/jpeg" ||
+                picture.ContentType == "image/png" ||
+                picture.ContentType == "image/bmp" ||
+                picture.ContentType == "image/gif")
+            {
+                Image image = Image.FromStream(picture.InputStream);
+                Image smallImage = null;
+                Image bigImage = null;
+
+                if (image.Width > 800 || image.Height > 800)
+                {
+                    bigImage = ScaleImage(image, 800);
+                    smallImage = ScaleImage(image, 200);
+                }
+                else if (image.Width > 200 || image.Height > 200)
+                {
+                    smallImage = ScaleImage(image, 200);
+                    bigImage = image;
+
+                    tempData = "Obrázek pro detail není dostatečně velký.";
+                }
+                else
+                {
+                    tempData = "Příliš malý obrázek. Nebylo možné ho přidat k profilu uživatele.";
+                }
+                if (smallImage != null)
+                {
+                    SaveImage(smallImage, controllerName, out string sIName);
+                    sImageName = sIName;
+                }
+                else if (bigImage != null)
+                {
+                    SaveImage(bigImage, controllerName, out string bIName);
+                    bImageName = bIName;
+                }
+            }
+            else
+            {
+                tempData = "Nepodporovaný typ obrázku.";
+            }
+
         }
-
-
     }
 }

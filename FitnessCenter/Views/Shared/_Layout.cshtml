@@ -3,36 +3,35 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../../../../favicon.ico">
 
     <title>Fitness</title>
 
     <!-- Bootstrap core CSS -->
 
     <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/bootstrap-theme.min.css")" rel="stylesheet">
     <link href="@Url.Content("~/Content/blog.css")" rel="stylesheet">
 </head>
 
 <body>
 
-    <div class="blog-masthead">
-        <div class="container">
-            <nav class="nav">
-                <a class="nav-link active" href="@Url.Action("Index","Home")">Home</a>
-                <a class="nav-link" href="@Url.Action("Index", "Activity")">Aktivity</a>
-                <a class="nav-link" href="@Url.Action("Index", "Room")">Sály</a>
-                <a class="nav-link" href="@Url.Action("Index", "User")">Uživatelé</a>
-                <a class="nav-link" href="@Url.Action("Index", "Term")">Termíny</a>
-                <a class="nav-link" href="@Url.Action("Index", "Reservation")">Rezervace</a>
-                <a class="nav-link" href="@Url.Action("Index", "Machine")">Stroje</a>
-            </nav>
-        </div>
-    </div>
-
+    
+    
+<div class="blog-masthead">
     <div class="container">
+        <nav class="blog-nav">
+            <a class="blog-nav-item @(ViewBag.Mark == null ? "active" : "")" href="@Url.Action("Index", "Home")">Home</a>
+            <a class="blog-nav-item @(ViewBag.Mark == "Activity" ? "active" : "")" href="@Url.Action("Index", "Activity")">Aktivity</a>
+            <a class="blog-nav-item @(ViewBag.Mark == "Term" ? "active" : "")" href="@Url.Action("Index", "Term")">Termíny</a>
+            <a class="blog-nav-item @(ViewBag.Mark == "Machine" ? "active" : "")" href="@Url.Action("Index", "Machine")">Stroje</a>            
+        </nav>
+    </div>
+</div>
+
+<div class="container">
 
         <div class="row">
             <div class="col-sm-12 blog-main">
@@ -47,15 +46,15 @@
                         @TempData["warning"]
                     </div>
                 }
-
+                @RenderSection("Sidebar",false)
                 @RenderBody()
 
             </div><!-- /.blog-main -->
 
             @*<DIV CLASS="COL-SM-3 OFFSET-SM-1 BLOG-SIDEBAR">
-                <DIV CLASS="SIDEBAR-MODULE SIDEBAR-MODULE-INSET">*@
+                <DIV CLASS="SIDEBAR-MODULE SIDEBAR-MODULE-INSET">
                     @RenderSection("Sidebar", false)
-                @*</div>
+                </div>
             </div>*@
 
         </div><!-- /.row -->

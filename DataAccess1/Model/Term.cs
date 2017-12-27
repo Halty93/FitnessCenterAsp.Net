@@ -14,7 +14,7 @@ namespace DataAccess.Model
 
         [Required(ErrorMessage = "Začátek je povinný údaj")]
         [DataType(DataType.DateTime)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd.mm.yyyy H:m}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:DD.MM.YYYY HH:mm}")]
         public virtual DateTime StartTerm { get; set; }
 
         [Required(ErrorMessage = "Konec je povinný údaj")]
@@ -26,13 +26,11 @@ namespace DataAccess.Model
         [Range(1, 100, ErrorMessage = "Kapacita musí být v rozsahu od 1 do 100.")]
         public virtual int Capacity { get; set; }
 
-        [Required(ErrorMessage = "Opakovatelný je povinný údaj")]
-        public virtual bool IsRepeatable { get; set; }
-
-        public virtual User Trainer { get; set; }
+        public virtual FitnessUser Trainer { get; set; }
 
         public virtual Activity Activity { get; set; }
 
         public virtual Room Room { get; set; }
+
     }
 }

@@ -1,0 +1,58 @@
+﻿@model DataAccess.Model.Term
+@{
+    ViewBag.Title = "Úprava termínu";
+}
+
+<h2>Úprava termínu</h2>
+
+@Html.ValidationSummary()
+
+@using (Html.BeginForm("Update", "Term", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @Html.HiddenFor(x=>x.Id)
+    <div class="col-md-12">
+        <div class='form-group'>
+            <label for="StartTerm" class="control-label">Začátek</label>
+            <div class='input-group date col-md-5' id='fromDateTime'>
+                <input type='text' id="StartTerm" name="startTerm" class="form-control"/>
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class='form-group'>
+            <label for="termLong" class="control-label">Délka v min.</label>
+            <div class='input-group date'>
+                <input type='number' id="termLong" name="timeLong" step="30" min="30" class="form-control" value="@ViewBag.TimeLong" required/>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="form-group col-md-5">
+            @Html.LabelFor(x => x.Capacity, "Kapacita")
+            @Html.TextBoxFor(x => x.Capacity, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Capacity)
+        </div>
+    </div>
+        <div class="col-md-12">
+            <div class="form-group col-md-5">
+                @Html.DropDownList("activityId", new SelectList(ViewBag.Activities, "id", "Name"), new { @class = "form-control checkbox" })
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group col-md-5">
+                @Html.DropDownList("roomId", new SelectList(ViewBag.Rooms, "id", "Name"), new { @class = "form-control" })
+            </div>
+        </div>
+    <button type="submit" class="btn btn-primary">Upravit termín</button>
+}
+<script type="text/javascript">
+    $(function () {
+        $('#fromDateTime').datetimepicker({
+            format: 'DD.MM.YYYY HH:mm', 
+            disabledHours: [0, 1, 2, 3, 4, 5, 6, 21, 22, 23, 24]
+        });
+    });
+</script>

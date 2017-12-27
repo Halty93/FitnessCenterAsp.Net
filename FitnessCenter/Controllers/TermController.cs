@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Web;
 using System.Web.Mvc;
 using DataAccess.Dao;
@@ -14,28 +15,11 @@ namespace FitnessCenter.Controllers
         public ActionResult Index()
         {
             TermDao tDao = new TermDao();
-            IList<Term> terms = tDao.GetAll();
+            IList<Term> terms = tDao.GetNewTerms();
+
+            ViewBag.Mark = "Term";
+
             return View(terms);
-        }
-
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult Add(Term term)
-        {
-            if (ModelState.IsValid)
-            {
-                //přidat termín
-            }
-            else
-            {
-                return View("Create", term);
-            }
-
-            return RedirectToAction("Index");
         }
     }
 }

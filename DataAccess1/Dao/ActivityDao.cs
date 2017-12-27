@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataAccess.Model;
+using NHibernate.Criterion;
 
 namespace DataAccess.Dao
 {
@@ -12,5 +13,6 @@ namespace DataAccess.Dao
         public ActivityDao() : base()
         {           
         }
+        
     }
 }

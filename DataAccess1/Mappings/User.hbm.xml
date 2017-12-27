@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" assembly="DataAccess" namespace="DataAccess.Model">
 
-  <class name="User" table ="User">
+  <class name="FitnessUser" table ="FitnessUser" lazy="false">
     <id name="Id" column="id">
-      <generator class="native" />
+      <generator class="guid" />
     </id>
     <property name="Name" column="name"/>
     <property name="Surname" column="surname"/>
@@ -12,7 +12,7 @@
     <property name="Password" column="password" />
     <property name="Birthdate" column="birth_date" />
     <property name="PhoneNumber" column="phone_number" />
-    <property name="Email" column="email" />
+    <property name="EmailAddress" column="email" />
     <property name="LicenceList" column="licence_list" />
     <property name="SmallImageName" column="big_image_name" />
     <property name="BigImageName" column="small_image_name" />
