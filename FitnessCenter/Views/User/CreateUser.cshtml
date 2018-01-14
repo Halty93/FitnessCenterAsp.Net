@@ -9,83 +9,90 @@
 
 @using (Html.BeginForm("AddUser", "User", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
 {
-    <div class="form-group">
-        @Html.LabelFor(x => x.Login, "Login")
-        @Html.TextBoxFor(x => x.Login, new { @class = "form-control" })
-        @Html.ValidationMessageFor(x => x.Login)
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(x => x.Password, "Heslo")
-        @Html.TextBoxFor(x => x.Password, new { @class = "form-control" })
-        @Html.ValidationMessageFor(x => x.Password)
-    </div>        
-    <div class="form-group">
-        @Html.LabelFor(x => x.ConfirmPassword, "Potvrzení hesla")
-        @Html.TextBoxFor(x => x.ConfirmPassword, new { @class = "form-control " })
-        @Html.ValidationMessageFor(x => x.ConfirmPassword)
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(x => x.Name, "Jméno")
-        @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
-        @Html.ValidationMessageFor(x => x.Name)
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(x => x.Surname, "Příjmení")
-        @Html.TextBoxFor(x => x.Surname, new { @class = "form-control" })
-        @Html.ValidationMessageFor(x => x.Surname)
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(x => x.Birthdate, "Datum narození")
-        @Html.TextBoxFor(x => x.Birthdate, new { @class = "form-control" })
-        @Html.ValidationMessageFor(x => x.Birthdate)
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(x => x.BirthNumber, "Rodné číslo (bez lomítka)")
-        @Html.TextBoxFor(x => x.BirthNumber, new { @class = "form-control" })
-        @Html.ValidationMessageFor(x => x.BirthNumber)
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(x => x.EmailAddress, "EmailAddress")
-        @Html.TextBoxFor(x => x.EmailAddress, new { @class = "form-control" })
-        @Html.ValidationMessageFor(x => x.EmailAddress)
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(x => x.PhoneNumber, "Telefon")
-        @Html.TextBoxFor(x => x.PhoneNumber, new { @class = "form-control" })
-        @Html.ValidationMessageFor(x => x.PhoneNumber)
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(x => x.Address.Country, "Stát")
-        @Html.TextBoxFor(x => x.Address.Country, new { @class = "form-control" })
-        @Html.ValidationMessageFor(x => x.Address.Country)
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(x => x.Address.Town, "Město")
-        @Html.TextBoxFor(x => x.Address.Town, new { @class = "form-control" })
-        @Html.ValidationMessageFor(x => x.Address.Town)
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(x => x.Address.Street, "Ulice")
-        @Html.TextBoxFor(x => x.Address.Street, new { @class = "form-control" })
-        @Html.ValidationMessageFor(x => x.Address.Street)
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(x => x.Address.StreetNumber, "Č.P.")
-        @Html.TextBoxFor(x => x.Address.StreetNumber, new { @class = "form-control" })
-        @Html.ValidationMessageFor(x => x.Address.StreetNumber)
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(x => x.Address.Zip, "PSČ")
-        @Html.TextBoxFor(x => x.Address.Zip, new { @class = "form-control" })
-        @Html.ValidationMessageFor(x => x.Address.Zip)
-    </div>
-    <div class="form-group">
-        <input type="file" class="btn btn-default" name ="picture"/>
-    </div>
+    <div class="col-md-5">
+        <div class="form-group">
+            @Html.LabelFor(x => x.Login, "Login")
+            @Html.TextBoxFor(x => x.Login, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Login)
 
+            @Html.LabelFor(x => x.Password, "Heslo")
+            @Html.TextBoxFor(x => x.Password, new { @class = "form-control", @type = "password" })
+            @Html.ValidationMessageFor(x => x.Password)
 
-    <button type="submit" class="btn btn-primary">Registrovat</button>
+            @Html.LabelFor(x => x.ConfirmPassword, "Potvrzení hesla")
+            @Html.TextBoxFor(x => x.ConfirmPassword, new { @class = "form-control ", @type = "password" })
+            @Html.ValidationMessageFor(x => x.ConfirmPassword)
+
+            @Html.LabelFor(x => x.Name, "Jméno")
+            @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Name)
+
+            @Html.LabelFor(x => x.Surname, "Příjmení")
+            @Html.TextBoxFor(x => x.Surname, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Surname)
+
+            <label for="Birthdate" class="control-label">Datum narození</label>
+            <div class='input-group' id='Birthdate'>
+                <input type='text' id="Birthdate" name="Birthdate" class="form-control" />
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+
+            @Html.LabelFor(x => x.BirthNumber, "Rodné číslo (bez lomítka)")
+            @Html.TextBoxFor(x => x.BirthNumber, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.BirthNumber)
+
+            <label for="picture" class="control-label">Fotografie</label>
+            <input type="file" class="btn btn-default" id="picture" name="picture" />
+        </div>
+    </div>
+    <div class="col-md-1"></div>
+    <div class="col-md-5">
+        <div class="form-group">
+            @Html.LabelFor(x => x.EmailAddress, "Email")
+            @Html.TextBoxFor(x => x.EmailAddress, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.EmailAddress)
+
+            @Html.LabelFor(x => x.PhoneNumber, "Telefon")
+            @Html.TextBoxFor(x => x.PhoneNumber, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.PhoneNumber)
+
+            @Html.LabelFor(x => x.Address.Country, "Stát")
+            @Html.TextBoxFor(x => x.Address.Country, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Address.Country)
+
+            @Html.LabelFor(x => x.Address.Town, "Město")
+            @Html.TextBoxFor(x => x.Address.Town, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Address.Town)
+
+            @Html.LabelFor(x => x.Address.Street, "Ulice")
+            @Html.TextBoxFor(x => x.Address.Street, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Address.Street)
+
+            @Html.LabelFor(x => x.Address.StreetNumber, "Č.P.")
+            @Html.TextBoxFor(x => x.Address.StreetNumber, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Address.StreetNumber)
+
+            @Html.LabelFor(x => x.Address.Zip, "PSČ")
+            @Html.TextBoxFor(x => x.Address.Zip, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Address.Zip)
+        </div>
+    </div>
+    <div class="form-group col-md-12">
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-primary">Registrovat</button>
+        </div>
+        <a href="#" onclick="history.go(-1)" class="btn btn-default col-md-2">
+            Zpět
+        </a>
+    </div>
 }
-<a href="#" onclick="history.go(-1)" class="btn btn-default">
-    Zpět
-</a>
+
+<script type="text/javascript">
+    $(function () {
+        $('#Birthdate').datetimepicker({
+            format: 'DD.MM.YYYY'
+        });
+    });
+</script>

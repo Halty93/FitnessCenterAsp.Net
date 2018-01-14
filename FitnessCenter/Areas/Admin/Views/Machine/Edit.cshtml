@@ -17,7 +17,7 @@
     <div class='form-group'>
         <label for="LastCheck" class="control-label">Poslední kontrola</label>
         <div class='input-group date col-md-5' id='LastCheck'>
-            <input type='text' id="LastCheck" name="LastCheck" class="form-control" />
+            <input type='text' id="LastCheck" name="LastCheck" class="form-control" value="@Model.LastCheck" />
             <span class="input-group-addon">
                 <span class="glyphicon glyphicon-calendar"></span>
             </span>
@@ -27,7 +27,7 @@
     <div class='form-group'>
         <label for="LastCheck" class="control-label">Následující kontrola</label>
         <div class='input-group date col-md-5' id='NextCheck'>
-            <input type='text' id="NextCheck" name="NextCheck" class="form-control" />
+            <input type='text' id="NextCheck" name="NextCheck" class="form-control" value="@Model.NextCheck"/>
             <span class="input-group-addon">
                 <span class="glyphicon glyphicon-calendar"></span>
             </span>
@@ -46,25 +46,40 @@
         @Html.TextAreaFor(x => x.Fault, new { @class = "form-control description-area" })
     </div>
     <div class="form-group">
-        <input type="file" class="btn btn-default" name="picture" />
+        <label for="picture" class="control-label">Fotografie</label>
+        <input type="file" class="btn btn-default" id="picture" name="picture" />
+    </div>
+    if (Model.SmallImageName != null)
+    {
+        <div class="form-group">
+            <img src="@Url.Content("~/Uploads/Machine/" + Model.SmallImageName + ".jpg")" />
+        </div>
+    }
+
+    <div class="form-group col-md-12">
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary">Upravit stroj</button>
+        </div>
         @if (Model.SmallImageName != null)
         {
-            <img src="@Url.Content("~/Uploads/Machine/" + Model.SmallImageName)"/>
-            @Html.ActionLink("Smazat obrázek", "DeletePicture", "Machine", new { id = Model.Id }, new { @class = "btn btn-danger" })
+            <div class="col-md-2">
+                @Html.ActionLink("Smazat obrázek", "DeletePicture", "Machine", new { id = Model.Id }, new { @class = "btn btn-danger" })
+            </div>
         }
+        <a href="#" onclick="history.go(-1)" class="btn btn-default col-md-1">
+            Zpět
+        </a>
     </div>
-    <button type="submit" class="btn btn-primary">Upravit stroj</button>
 }
-<a href="#" onclick="history.go(-1)" class="btn btn-default">
-    Zpět
-</a>
 <script type="text/javascript">
     $(function () {
         $('#LastCheck').datetimepicker({
-            format: 'DD.MM.YYYY'
+            format: 'DD.MM.YYYY',
+            useCurrent: false
         });
         $('#NextCheck').datetimepicker({
-            format: 'DD.MM.YYYY'
+            format: 'DD.MM.YYYY',
+            useCurrent: false
         });
     });
 </script>

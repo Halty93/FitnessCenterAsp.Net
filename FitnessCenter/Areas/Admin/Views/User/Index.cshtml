@@ -48,10 +48,10 @@
                 <td>@u.EmailAddress</td>
                 <td>@u.Birthdate.ToString("dd/MM/yyyy")</td>
                 <td>
-                    @if (u.Role.Name == "Údržbář" || u.Role.Name == "Trenér")
+                    @if (u.Role.Name == "Údržbář" || u.Role.Name == "Trenér" || u.Role.Name == "Zákazník")
                 {
                         @Html.ActionLink(" ", "EditEmployee", new { id = u.Id }, new { @class = "glyphicon glyphicon-pencil btn btn-default" })
-                        @Html.ActionLink(" ", "Delete", new { id = u.Id }, new { @class = "glyphicon glyphicon-pencil btn btn-default" })
+                        @Html.ActionLink(" ", "Delete", new { id = u.Id }, new { @class = "glyphicon glyphicon-trash btn btn-danger" })
                     }
                     @Ajax.ActionLink(" ", "Detail", new { id = u.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" }, new { @class = "glyphicon glyphicon-info-sign btn btn-default" })
                 </td>
@@ -70,7 +70,14 @@
         @for (int i = 5; i <= 20; i *= 2)
         {
             <li class="@(ViewBag.Items == i ? "active" : "") text-right">
-                @Ajax.ActionLink(i.ToString(), "Index", new { page = ViewBag.CurrentPage, item = i }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })
+                @if (ViewBag.CurrentRole == null)
+                {
+                    @Ajax.ActionLink(i.ToString(), "Index", new { page = ViewBag.CurrentPage, item = i }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })
+                }
+                else
+                {
+                    @Ajax.ActionLink(i.ToString(), "Role", new { page = ViewBag.CurrentPage, item = i, id = ViewBag.CurrentRole }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })
+                }
             </li>
         }
     </ul>
@@ -83,7 +90,14 @@
             @for (int i = 1; i <= ViewBag.Pages; i++)
             {
                 <li class="@(ViewBag.CurrentPage == i ? "active" : "")">
-                    @Ajax.ActionLink(i.ToString(), "Index", new { page = i, item = ViewBag.Items }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })
+                    @if (ViewBag.CurrentRole == null)
+                    {
+                        @Ajax.ActionLink(i.ToString(), "Index", new { page = i, item = ViewBag.Items }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })
+                    }
+                    else
+                    {
+                        @Ajax.ActionLink(i.ToString(), "Role", new { page = i, item = ViewBag.Items, id = ViewBag.CurrentRole }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })
+                    }
                 </li>
             }
         </ul>

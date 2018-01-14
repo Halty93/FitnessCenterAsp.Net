@@ -9,45 +9,47 @@
 
 @foreach (Activity act in Model)
 {
-    <div class="col-sm-2 text-center" style="padding: 5px 0">
-        @if (act.SmallImageName != null)
-        {
-            <img src="~/Uploads/Activity/@act.SmallImageName" alt="Fotografie aktivity @act.Name" />
-        }
-        else
-        {
-            <img src="~/Uploads/NoPicture.png" alt="Fotografie není k dispozici" />
-        }
-    </div>
+    <div class="col-sm-12">
+        <div class="col-sm-7 text-center" style="padding: 5px 0">
+            @if (act.SmallImageName != null)
+            {
+                <img src="@Url.Content("~/Uploads/Activity/" + act.SmallImageName + ".jpg")" alt="Fotografie aktivity @act.Name" />
+            }
+            else
+            {
+                <img src="~/Uploads/NoPicture.png" alt="Fotografie není k dispozici" />
+            }
+        </div>
 
-    <div class="col-sm-10">
-        <table class="table-responsive table-condensed" >
-            <thead>
-                <tr>
-                    <th >
-                        @act.Name
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Náročnost</td>
-                    <td>@act.Difficultness</td>
-                </tr>
-                <tr>
-                    <td>Cena</td>
-                    <td>@act.Price.ToString("C", new CultureInfo("cs-CZ"))</td>
-                </tr>
-                <tr>
-                    <td>Popis</td>
-                    <td>@Html.Raw(act.Description)</td>
-                </tr>
-                <tr>
-                    <td>Založil</td>
-                    <td>Autor kurzu</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="col-sm-5">
+            <table class="table-responsive table-condensed">
+                <thead>
+                    <tr>
+                        <th>
+                            @act.Name
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Náročnost</td>
+                        <td>@act.Difficultness</td>
+                    </tr>
+                    <tr>
+                        <td>Cena</td>
+                        <td>@act.Price.ToString("C", new CultureInfo("cs-CZ"))</td>
+                    </tr>
+                    <tr>
+                        <td>Popis</td>
+                        <td>@Html.Raw(act.Description)</td>
+                    </tr>
+                    <tr>
+                        <td>Založil</td>
+                        <td>Autor kurzu</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 }
 <div class ="clearfix"></div>

@@ -45,11 +45,16 @@
                 @Html.DropDownList("roomId", new SelectList(ViewBag.Rooms, "id", "Name"), new { @class = "form-control" })
             </div>
         </div>
-        <button type="submit" class="btn btn-primary">Vytvořit termín</button>
+        <div class="form-group col-md-12">
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary">Vytvořit termín</button>
+            </div>
+            <a href="#" onclick="history.go(-1)" class="btn btn-default col-md-1">
+                Zpět
+            </a>
+        </div>
 }
-<a href="#" onclick="history.go(-1)" class="btn btn-default">
-    Zpět
-</a>
+
 <script type="text/javascript">
     $(function () {
         $('#fromDateTime').datetimepicker({

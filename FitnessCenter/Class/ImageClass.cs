@@ -31,7 +31,7 @@ namespace FitnessCenter.Class
 
             Guid g = Guid.NewGuid();
 
-            imageName = g.ToString() + ".jpg";
+            imageName = g.ToString();
             b.Save(HttpContext.Current.Server.MapPath("~/Uploads/" + controllerName + "/" + imageName + ".jpg"),
                 ImageFormat.Jpeg);
 
@@ -75,7 +75,7 @@ namespace FitnessCenter.Class
                     SaveImage(smallImage, controllerName, out string sIName);
                     sImageName = sIName;
                 }
-                else if (bigImage != null)
+                if (bigImage != null)
                 {
                     SaveImage(bigImage, controllerName, out string bIName);
                     bImageName = bIName;

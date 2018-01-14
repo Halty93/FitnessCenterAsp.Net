@@ -57,14 +57,18 @@ namespace FitnessCenter.Areas.Admin.Controllers
                 r.User = uDao.GetByLogin(User.Identity.Name);
                 r.ReservationTime = DateTime.Now;
 
-                if (tDao.GetActualCapacity(r.Term)>0 && rDao.ReservationExist(r.Term, r.User) == false)
+                if (tDao.GetActualCapacity(r.Term) > 0 && rDao.ReservationExist(r.Term, r.User) == false)
                 {
                     rDao.Create(r);
                     TempData["succes"] = "Termín úspěšně rezervován.";
                 }
-                else
+                else if (tDao.GetActualCapacity(r.Term) <= 0)
                 {
                     TempData["warning"] = "Termín je již plně obsazen.";
+                }
+                else if (rDao.ReservationExist(r.Term, r.User) != false)
+                {
+                    TempData["warning"] = "Termín již máte rezervovaný.";
                 }
             }
             catch (Exception e)

@@ -115,8 +115,14 @@ namespace FitnessCenter.Areas.Admin.Controllers
                             TempData["warning"] = tempData;
                         }
 
-                        System.IO.File.Delete(Server.MapPath("~/Uploads/Activity/" + act.SmallImageName));
-                        System.IO.File.Delete(Server.MapPath("~/Uploads/Activity/" + act.BigImageName));
+                        if (act.SmallImageName != null)
+                        {
+                            System.IO.File.Delete(Server.MapPath("~/Uploads/Activity/" + act.SmallImageName));
+                        }
+                        if (act.BigImageName != null)
+                        {
+                            System.IO.File.Delete(Server.MapPath("~/Uploads/Activity/" + act.BigImageName));
+                        }                           
 
                         act.BigImageName = bigImageName;
                         act.SmallImageName = smallImageName;
@@ -155,8 +161,14 @@ namespace FitnessCenter.Areas.Admin.Controllers
                 ActivityDao aDao = new ActivityDao();
                 Activity a = aDao.GetById(id);
 
-                System.IO.File.Delete(Server.MapPath("~/Uploads/Activity/" + a.SmallImageName));
-                System.IO.File.Delete(Server.MapPath("~/Uploads/Activity/" + a.BigImageName));
+                if (a.SmallImageName != null)
+                {
+                    System.IO.File.Delete(Server.MapPath("~/Uploads/Activity/" + a.SmallImageName));
+                }
+                if (a.BigImageName != null)
+                {
+                    System.IO.File.Delete(Server.MapPath("~/Uploads/Activity/" + a.BigImageName));
+                }
 
                 //je zapotřebí smazat nejdrive vsechny terminy na tuto aktivitu, a take rezervace na tyto terminy
                 TermDao tDao = new TermDao();
@@ -192,8 +204,14 @@ namespace FitnessCenter.Areas.Admin.Controllers
                 ActivityDao aDao = new ActivityDao();
                 Activity a = aDao.GetById(id);
 
-                System.IO.File.Delete(Server.MapPath("~/Uploads/Activity/" + a.SmallImageName));
-                System.IO.File.Delete(Server.MapPath("~/Uploads/Activity/" + a.BigImageName));
+                if (a.SmallImageName != null)
+                {
+                    System.IO.File.Delete(Server.MapPath("~/Uploads/Activity/" + a.SmallImageName));
+                }
+                if (a.BigImageName != null)
+                {
+                    System.IO.File.Delete(Server.MapPath("~/Uploads/Activity/" + a.BigImageName));
+                }
 
                 a.SmallImageName = null;
                 a.BigImageName = null;

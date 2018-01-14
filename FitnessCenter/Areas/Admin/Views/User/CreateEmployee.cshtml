@@ -89,14 +89,16 @@
         </div>
     </div>
 
-    <div class="col-md-12">
-        <button type="submit" class="btn btn-primary">Vytvořit zaměstnance</button>
+    <div class="form-group col-md-12">
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-primary">Vytvořit zaměstnance</button>
+        </div>
+        <a href="#" onclick="history.go(-1)" class="btn btn-default col-md-1">
+            Zpět
+        </a>
     </div>
-
 }
-<a href="#" onclick="history.go(-1)" class="btn btn-default">
-    Zpět
-</a>
+
 <script type="text/javascript">
     $(function () {
         $('#Birthdate').datetimepicker({

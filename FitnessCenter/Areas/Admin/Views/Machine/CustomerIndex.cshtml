@@ -8,50 +8,52 @@
 
 @foreach (Machine m in Model)
 {
-    <div class="col-sm-2 text-center" style="padding: 5px 0">
-        @if (m.SmallImageName != null)
-        {
-            <img src="~/Uploads/Machine/@m.SmallImageName" alt="Fotografie stroje @m.Name" />
-        }
-        else
-        {
-            <img src="~/Uploads/NoPicture.png" alt="Fotografie není k dispozici" />
-        }
-    </div>
+    <div class="col-sm-12">
+        <div class="col-sm-7 text-center" style="padding: 5px 0">
+            @if (m.SmallImageName != null)
+            {
+                <img src="@Url.Content("~/Uploads/Machine/" + m.SmallImageName + ".jpg")" alt="Fotografie stroje @m.Name" />
+            }
+            else
+            {
+                <img src="~/Uploads/NoPicture.png" alt="Fotografie není k dispozici" />
+            }
+        </div>
 
-    <div class="col-sm-10">
-        <table class="table-responsive table-condensed">
-            <thead>
-                <tr>
-                    <th>
-                        @Ajax.ActionLink(m.Name, "Detail", new { id = m.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Poslední kontrola</td>
-                    <td>@m.LastCheck.ToString("d.M.yyyy")</td>
-                </tr>
-                <tr>
-                    <td>Následující kontrola</td>
-                    <td>@m.NextCheck.ToString("d.M.yyyy")</td>
-                </tr>
-                <tr>
-                    <td>Popis</td>
-                    <td>@m.Description</td>
-                </tr>
-                <tr>
-                    <td>Stav stroje</td>
-                    <td>@m.Status</td>
-                </tr>
-                <tr>
-                    <td>
-                        @Html.ActionLink("Závada na stroji", "EditFault", new { id = m.Id }, new { @class = "btn btn-default" })
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="col-sm-5">
+            <table class="table-responsive table-condensed">
+                <thead>
+                    <tr>
+                        <th>
+                            @Ajax.ActionLink(m.Name, "Detail", new { id = m.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Poslední kontrola</td>
+                        <td>@m.LastCheck.ToString("d.M.yyyy")</td>
+                    </tr>
+                    <tr>
+                        <td>Následující kontrola</td>
+                        <td>@m.NextCheck.ToString("d.M.yyyy")</td>
+                    </tr>
+                    <tr>
+                        <td>Popis</td>
+                        <td>@m.Description</td>
+                    </tr>
+                    <tr>
+                        <td>Stav stroje</td>
+                        <td>@m.Status</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.ActionLink("Závada na stroji", "EditFault", new { id = m.Id }, new { @class = "btn btn-default" })
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 }
 <div class="dropdown navbar-right">
@@ -72,7 +74,7 @@
 
 <div class="navbar-left">
     @if (ViewBag.Pages != null)
-    {
+            {
         <ul class="pagination pagination-sm">
             @for (int i = 1; i <= ViewBag.Pages; i++)
             {

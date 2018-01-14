@@ -206,8 +206,14 @@ namespace FitnessCenter.Areas.Admin.Controllers
                             TempData["warning"] = tempData;
                         }
 
-                        System.IO.File.Delete(Server.MapPath("~/Uploads/Machine/" + mach.SmallImageName));
-                        System.IO.File.Delete(Server.MapPath("~/Uploads/Machine/" + mach.BigImageName));
+                        if (mach.SmallImageName != null)
+                        {
+                            System.IO.File.Delete(Server.MapPath("~/Uploads/Machine/" + mach.SmallImageName));
+                        }
+                        if (mach.BigImageName != null)
+                        {
+                            System.IO.File.Delete(Server.MapPath("~/Uploads/Machine/" + mach.BigImageName));
+                        }
 
                         mach.BigImageName = bigImageName;
                         mach.SmallImageName = smallImageName;
@@ -251,8 +257,14 @@ namespace FitnessCenter.Areas.Admin.Controllers
                 MachineDao mDao = new MachineDao();
                 Machine m = mDao.GetById(id);
 
-                System.IO.File.Delete(Server.MapPath("~/Uploads/Machine/" + m.SmallImageName));
-                System.IO.File.Delete(Server.MapPath("~/Uploads/Machine/" + m.BigImageName));
+                if (m.SmallImageName != null)
+                {
+                    System.IO.File.Delete(Server.MapPath("~/Uploads/Machine/" + m.SmallImageName));
+                }
+                if (m.BigImageName != null)
+                {
+                    System.IO.File.Delete(Server.MapPath("~/Uploads/Machine/" + m.BigImageName));
+                }
 
                 mDao.Delete(m);
 
@@ -274,8 +286,14 @@ namespace FitnessCenter.Areas.Admin.Controllers
                 MachineDao mDao = new MachineDao();
                 Machine m = mDao.GetById(id);
 
-                System.IO.File.Delete(Server.MapPath("~/Uploads/Machine/" + m.SmallImageName));
-                System.IO.File.Delete(Server.MapPath("~/Uploads/Machine/" + m.BigImageName));
+                if (m.SmallImageName != null)
+                {
+                    System.IO.File.Delete(Server.MapPath("~/Uploads/Machine/" + m.SmallImageName));
+                }
+                if (m.BigImageName != null)
+                {
+                    System.IO.File.Delete(Server.MapPath("~/Uploads/Machine/" + m.BigImageName));
+                }
 
                 m.SmallImageName = null;
                 m.BigImageName = null;

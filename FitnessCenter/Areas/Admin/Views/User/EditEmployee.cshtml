@@ -57,24 +57,36 @@
     </div>
 
     <div class="form-group col-md-7">
-        <input type="file" class="btn btn-default" name="picture" />
+        <label for="picture" class="control-label">Fotografie</label>
+        <input type="file" class="btn btn-default" id="picture" name="picture" />
+    </div>
+    if (Model.SmallImageName != null)
+    {
+        <div class="form-group">
+            <img src="@Url.Content("~/Uploads/FitnessUser/" + Model.SmallImageName + ".jpg")" />
+        </div>
+    }
+
+    <div class="form-group col-md-12">
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-primary">Upravit zaměstnance</button>
+        </div>
         @if (Model.SmallImageName != null)
         {
-            <img src="@Url.Content("~/Uploads/FitnessUser/" + Model.SmallImageName)" />
-            @Html.ActionLink("Smazat obrázek", "DeletePicture", "User", new { id = Model.Id, view = "Emp" }, new { @class = "btn btn-danger" })
+            <div class="col-md-2">
+                @Html.ActionLink("Smazat obrázek", "DeletePicture", "User", new { id = Model.Id }, new { @class = "btn btn-danger" })
+            </div>
         }
-    </div>
-    <div class="col-md-12">
-        <button type="submit" class="btn btn-primary">Upravit zaměstnance</button>
+        <a href="#" onclick="history.go(-1)" class="btn btn-default col-md-1">
+            Zpět
+        </a>
     </div>
 }
-<a href="#" onclick="history.go(-1)" class="btn btn-default">
-    Zpět
-</a>
 <script type="text/javascript">
     $(function () {
         $('#Birthdate').datetimepicker({
-            format: 'DD.MM.YYYY'
+            format: 'DD.MM.YYYY',
+            useCurrent: false
         });
     });
 </script>

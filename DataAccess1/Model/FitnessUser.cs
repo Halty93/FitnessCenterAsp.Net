@@ -19,7 +19,10 @@ namespace DataAccess.Model
         [Required(ErrorMessage = "Příjmení uživatele je povinný údaj")]
         public virtual string Surname { get; set; }
 
-        public virtual int BirthNumber { get; set; }
+        [MaxLength(12)]
+        [MinLength(1)]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "Rodné číslo piště bez znaků")]
+        public virtual string BirthNumber { get; set; }
 
         [Required(ErrorMessage = "Login je povinný údaj")]
         public virtual string Login { get; set; }

@@ -42,14 +42,20 @@ namespace FitnessCenter.Controllers
                     Address a = new Address();
 
                     fitnessUser.Role = new RoleDao().GetById(399);
-                    a.Country = fitnessUser.Address.Country;
-                    a.Street = fitnessUser.Address.Street;
-                    a.StreetNumber = fitnessUser.Address.StreetNumber;
-                    a.Town = fitnessUser.Address.Town;
-                    a.Zip = fitnessUser.Address.Zip;
+                    fitnessUser.Password = PasswordHash.CreateHash(fitnessUser.Password);
+                    a = fitnessUser.Address;
 
-                    uDao.Create(fitnessUser);
-                    aDao.Create(a);
+                    if (uDao.LoginExist(fitnessUser.Login) == false)
+                    {
+                        aDao.Create(a);
+                        fitnessUser.Address = a;
+                        uDao.Create(fitnessUser);                       
+                    }
+                    else
+                    {
+                        TempData["warning"] = "Uživatel pod tímto loginem již existuje!";
+                        return View("CreateUser", fitnessUser);
+                    }
                 }
                 else
                 {

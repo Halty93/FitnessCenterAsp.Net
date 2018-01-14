@@ -7,13 +7,13 @@
 <h2>Profil: @Model.Name @Model.Surname</h2>
 
 <div class="col-sm-3 text-center">
-    @if (Model.BigImageName != null)
+    @if (Model.SmallImageName != null)
     {
-        <img src="~/Uploads/User/@Model.BigImageName" alt="Ikona uživatele" class="img-circle sidebar-module" />
+        <img src="@Url.Content("~/Uploads/FitnessUser/" + Model.SmallImageName + ".jpg")" alt="Ikona uživatele" class="img-circle sidebar-module" />
     }
     else
     {
-        <img src="~/Uploads/User/noUserPicture.png" alt="Ikona uživatele" class="img-circle sidebar-module" />
+        <img src="~/Uploads/FitnessUser/noUserPicture.png" alt="Ikona uživatele" class="img-circle sidebar-module" />
     }
 </div>
 <div class="col-sm-7">
@@ -63,8 +63,8 @@
     </a>
     if (Model.Role.Name == "Zákazník")
     {
-        <a href="@Url.Action("Delete", "User", new {id = Model.Id})" class="btn btn-danger glyphicon-trash">
-            Smazat
+        <a href="@Url.Action("Delete", "User", new {id = Model.Id})" class="btn btn-danger">
+            Smazat profil
         </a>
     }
 }

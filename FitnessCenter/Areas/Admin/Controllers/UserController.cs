@@ -98,16 +98,14 @@ namespace FitnessCenter.Areas.Admin.Controllers
                     Address a = new Address();
 
                     fitnessUser.Role = new RoleDao().GetById(399);
-                    a.Country = fitnessUser.Address.Country;
-                    a.Street = fitnessUser.Address.Street;
-                    a.StreetNumber = fitnessUser.Address.StreetNumber;
-                    a.Town = fitnessUser.Address.Town;
-                    a.Zip = fitnessUser.Address.Zip;
+                    fitnessUser.Password = PasswordHash.CreateHash(fitnessUser.Password);
+                    a = fitnessUser.Address;
 
                     if (uDao.LoginExist(fitnessUser.Login) == false)
                     {
+                        aDao.Create(a); 
+                        fitnessUser.Address = a;
                         uDao.Create(fitnessUser);
-                        aDao.Create(a);
                     }
                     else
                     {
@@ -274,8 +272,14 @@ namespace FitnessCenter.Areas.Admin.Controllers
                             TempData["warning"] = tempData;
                         }
 
-                        System.IO.File.Delete(Server.MapPath("~/Uploads/FitnessUser/" + fitnessUser.SmallImageName));
-                        System.IO.File.Delete(Server.MapPath("~/Uploads/FitnessUser/" + fitnessUser.BigImageName));
+                        if (fitnessUser.SmallImageName != null)
+                        {
+                            System.IO.File.Delete(Server.MapPath("~/Uploads/FitnessUser/" + fitnessUser.SmallImageName));
+                        }
+                        if (fitnessUser.BigImageName != null)
+                        {
+                            System.IO.File.Delete(Server.MapPath("~/Uploads/FitnessUser/" + fitnessUser.BigImageName));
+                        }                        
 
                         fitnessUser.BigImageName = bigImageName;
                         fitnessUser.SmallImageName = smallImageName;
@@ -332,8 +336,14 @@ namespace FitnessCenter.Areas.Admin.Controllers
                             TempData["warning"] = tempData;
                         }
 
-                        System.IO.File.Delete(Server.MapPath("~/Uploads/FitnessUser/" + fitnessUser.SmallImageName));
-                        System.IO.File.Delete(Server.MapPath("~/Uploads/FitnessUser/" + fitnessUser.BigImageName));
+                        if (fitnessUser.SmallImageName != null)
+                        {
+                            System.IO.File.Delete(Server.MapPath("~/Uploads/FitnessUser/" + fitnessUser.SmallImageName));
+                        }
+                        if (fitnessUser.BigImageName != null)
+                        {
+                            System.IO.File.Delete(Server.MapPath("~/Uploads/FitnessUser/" + fitnessUser.BigImageName));
+                        }
 
                         fitnessUser.BigImageName = bigImageName;
                         fitnessUser.SmallImageName = smallImageName;
@@ -413,7 +423,8 @@ namespace FitnessCenter.Areas.Admin.Controllers
                 UserDao uDao = new UserDao();
                 AddressDao aDao = new AddressDao();
                 FitnessUser fitnessUser = uDao.GetById(id);
-                Address address = fitnessUser.Address;
+                Address address = new Address();
+                address = fitnessUser.Address;
 
                 //pokud se jedná o trenéra, je třeba smazat jeho termíny, které vede
                 if (fitnessUser.Role.Name == "Trenér")
@@ -436,19 +447,34 @@ namespace FitnessCenter.Areas.Admin.Controllers
                         rDao.Delete(r);
                     }
                 }
-                //todo pokud se bude jednat o přihlášeného uživatele, je třeba jej odhlásit, 
-                //todo zaměstnance bude moci mazat pouze reditel, možná pouvažovat na samostatné metody mazání
-                aDao.Delete(address);
+
+                if (fitnessUser.SmallImageName != null)
+                {
+                    System.IO.File.Delete(Server.MapPath("~/Uploads/FitnessUser/" + fitnessUser.SmallImageName));
+                }
+                if (fitnessUser.BigImageName != null)
+                {
+                    System.IO.File.Delete(Server.MapPath("~/Uploads/FitnessUser/" + fitnessUser.BigImageName));
+                }
+
                 uDao.Delete(fitnessUser);
+                aDao.Delete(address);
+                
 
                 TempData["succes"] = "Uživatelský účet byl odstraněn.";
+
+                if (fitnessUser.Login == User.Identity.Name)
+                {
+                    return RedirectToAction("Logout", "Home");
+                }
+                    return RedirectToAction("Index", "Home");
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 throw;
             }
-            return RedirectToAction("Index", "Home");
+            
         }
 
         public ActionResult DeletePicture(int id, string view)
@@ -458,8 +484,14 @@ namespace FitnessCenter.Areas.Admin.Controllers
                 UserDao uDao = new UserDao();
                 FitnessUser u = uDao.GetById(id);
 
-                System.IO.File.Delete(Server.MapPath("~/Uploads/FitnessUser/" + u.SmallImageName));
-                System.IO.File.Delete(Server.MapPath("~/Uploads/FitnessUser/" + u.BigImageName));
+                if (u.SmallImageName != null)
+                {
+                    System.IO.File.Delete(Server.MapPath("~/Uploads/FitnessUser/" + u.SmallImageName));
+                }
+                if (u.BigImageName != null)
+                {
+                    System.IO.File.Delete(Server.MapPath("~/Uploads/FitnessUser/" + u.BigImageName));
+                }
 
                 u.SmallImageName = null;
                 u.BigImageName = null;

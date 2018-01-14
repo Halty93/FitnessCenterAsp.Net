@@ -18,61 +18,63 @@
             <li role="presentation" class="@(ViewBag.CurrentStatus == "V pořádku" ? "active" : "")">
                 @Ajax.ActionLink("V pořádku", "Status", new { status = "V pořádku", page = ViewBag.CurrentPage, item = ViewBag.Items }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })
             </li>
-                
+
             <li role="presentation" class="@(ViewBag.CurrentStatus == "Poškozený" ? "active" : "")">
                 @Ajax.ActionLink("Poškozený", "Status", new { status = "Poškozený", page = ViewBag.CurrentPage, item = ViewBag.Items }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })
-            </li> 
-        </ul>  
+            </li>
+        </ul>
     </div>
 </div>
 
 @foreach (Machine m in Model)
 {
-    <div class="col-sm-2 text-center" style="padding: 5px 0">
-        @if (m.SmallImageName != null)
-        {
-            <img src="~/Uploads/Machine/@m.SmallImageName" alt="Fotografie stroje @m.Name" />
-        }
-        else
-        {
-            <img src="~/Uploads/NoPicture.png" alt="Fotografie není k dispozici" />
-        }
-    </div>
+    <div class="col-sm-12">
+        <div class="col-sm-7 text-center" style="padding: 5px 0">
+            @if (m.SmallImageName != null)
+            {
+                <img src="@Url.Content("~/Uploads/Machine/" + m.SmallImageName + ".jpg")" alt="Fotografie stroje @m.Name" />
+            }
+            else
+            {
+                <img src="~/Uploads/NoPicture.png" alt="Fotografie není k dispozici" />
+            }
+        </div>
 
-    <div class="col-sm-10">
-        <table class="table-responsive table-condensed">
-            <thead>
-                <tr>
-                    <th>
-                         @Ajax.ActionLink(m.Name, "Detail", new { id = m.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Poslední kontrola</td>
-                    <td>@m.LastCheck.ToString("d.M.yyyy")</td>
-                </tr>
-                <tr>
-                    <td>Následující kontrola</td>
-                    <td>@m.NextCheck.ToString("d.M.yyyy")</td>
-                </tr>
-                <tr>
-                    <td>Popis</td>
-                    <td>@m.Description</td>
-                </tr>
-                <tr>
-                    <td>Stav stroje</td>
-                    <td>@m.Status</td>
-                </tr>
-                <tr>
-                    <td>
-                        @Html.ActionLink(" ", "Delete", new { id = m.Id }, new { @class = "glyphicon glyphicon-trash btn btn-danger" })
-                        @Html.ActionLink(" ", "Edit", new { id = m.Id }, new { @class = "glyphicon glyphicon-pencil btn btn-default" })
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="col-sm-5">
+            <table class="table-responsive table-condensed">
+                <thead>
+                    <tr>
+                        <th>
+                            @Ajax.ActionLink(m.Name, "Detail", new { id = m.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Poslední kontrola</td>
+                        <td>@m.LastCheck.ToString("d.M.yyyy")</td>
+                    </tr>
+                    <tr>
+                        <td>Následující kontrola</td>
+                        <td>@m.NextCheck.ToString("d.M.yyyy")</td>
+                    </tr>
+                    <tr>
+                        <td>Popis</td>
+                        <td>@m.Description</td>
+                    </tr>
+                    <tr>
+                        <td>Stav stroje</td>
+                        <td>@m.Status</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.ActionLink(" ", "Delete", new { id = m.Id }, new { @class = "glyphicon glyphicon-trash btn btn-danger" })
+                            @Html.ActionLink(" ", "Edit", new { id = m.Id }, new { @class = "glyphicon glyphicon-pencil btn btn-default" })
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 }
 <div class="dropdown navbar-right">
@@ -85,7 +87,7 @@
         @for (int i = 5; i <= 20; i *= 2)
         {
             <li class="@(ViewBag.Items == i ? "active" : "") text-right">
-                @Ajax.ActionLink(i.ToString(), "Index", new { page = ViewBag.CurrentPage, item = i }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })
+                @Ajax.ActionLink(i.ToString(), "Index", new { page = ViewBag.CurrentPage, item = i, status = ViewBag.CurrentStatus }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })
             </li>
         }
     </ul>
@@ -93,12 +95,12 @@
 
 <div class="navbar-left">
     @if (ViewBag.Pages != null)
-    {
+            {
         <ul class="pagination pagination-sm">
             @for (int i = 1; i <= ViewBag.Pages; i++)
             {
                 <li class="@(ViewBag.CurrentPage == i ? "active" : "")">
-                    @Ajax.ActionLink(i.ToString(), "Index", new { page = i, item = ViewBag.Items }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })
+                    @Ajax.ActionLink(i.ToString(), "Index", new { page = i, item = ViewBag.Items, status = ViewBag.CurrentStatus }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })
                 </li>
             }
         </ul>

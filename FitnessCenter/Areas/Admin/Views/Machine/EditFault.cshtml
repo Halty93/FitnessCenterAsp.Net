@@ -20,9 +20,12 @@
         @Html.LabelFor(x => x.Fault, "Popis závady")
         @Html.TextAreaFor(x => x.Fault, new { @class = "form-control description-area" })
     </div>
-
-    <button type="submit" class="btn btn-primary">Přidat závadu</button>
+    <div class="form-group col-md-12">
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary">Upravit závadu</button>
+        </div>
+        <a href="#" onclick="history.go(-1)" class="btn btn-default col-md-1">
+            Zpět
+        </a>
+    </div>
 }
-<a href="#" onclick="history.go(-1)" class="btn btn-default">
-    Zpět
-</a>

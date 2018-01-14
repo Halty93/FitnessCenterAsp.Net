@@ -8,12 +8,12 @@
 
 @using (Html.BeginForm("Update", "Activity", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
 {
-    @Html.HiddenFor(x=>x.Id)
+    @Html.HiddenFor(x => x.Id)
     @Html.HiddenFor(x => x.BigImageName)
     @Html.HiddenFor(x => x.SmallImageName)
     @Html.HiddenFor(x => x.Name)
     <input type="hidden" value="@Model.Author.Id" name="authorId" />
-   
+
     <div class="form-group">
         @Html.LabelFor(x => x.Difficultness, "Obtížnost")
         @Html.TextBoxFor(x => x.Difficultness, new { @class = "form-control" })
@@ -29,16 +29,31 @@
         @Html.TextAreaFor(x => x.Description, new { @class = "form-control description-area" })
     </div>
     <div class="form-group">
-        <input type="file" class="btn btn-default" name="picture" />
+        <label for="picture" class="control-label">Fotografie</label>
+        <input type="file" class="btn btn-default" id="picture" name="picture" />
+    </div>
+    if (Model.SmallImageName != null)
+    {
+        <div class="form-group">
+            <img src="@Url.Content("~/Uploads/Activity/" + Model.SmallImageName + ".jpg")" />
+        </div>
+    }
+
+    <div class="form-group col-md-12">
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary">Upravit aktivitu</button>
+        </div>
         @if (Model.SmallImageName != null)
         {
-            <img src="@Url.Content("~/Uploads/Acivity/" + Model.SmallImageName)"/>
-            @Html.ActionLink("Smazat obrázek","DeletePicture","Activity",new{id = Model.Id},new{@class = "btn btn-danger"})
+            <div class="col-md-2">
+                @Html.ActionLink("Smazat obrázek", "DeletePicture", "Activity", new { id = Model.Id }, new { @class = "btn btn-danger" })
+            </div>
         }
+        <a href="#" onclick="history.go(-1)" class="btn btn-default col-md-1">
+            Zpět
+        </a>
     </div>
-    <button type="submit" class="btn btn-primary">Upravit aktivitu</button>
+
 }
-<a href="#" onclick="history.go(-1)" class="btn btn-default">
-    Zpět
-</a>
+
 

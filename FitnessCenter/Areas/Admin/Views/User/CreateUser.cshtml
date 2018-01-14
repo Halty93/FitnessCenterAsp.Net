@@ -42,6 +42,9 @@
             @Html.LabelFor(x => x.BirthNumber, "Rodné číslo (bez lomítka)")
             @Html.TextBoxFor(x => x.BirthNumber, new { @class = "form-control" })
             @Html.ValidationMessageFor(x => x.BirthNumber)
+
+            <label for="picture" class="control-label">Fotografie</label>
+            <input type="file" class="btn btn-default" id="picture" name="picture" />
         </div>
     </div>
     <div class="col-md-1"></div>
@@ -76,18 +79,17 @@
                 @Html.ValidationMessageFor(x => x.Address.Zip)
             </div>
         </div>
-        <div class="form-group col-md-5">
-            <label for="picture" class="control-label">Fotografie</label>
-            <input type="file" class="btn btn-default" id="picture" name="picture" />
-        </div>
-        <div class="col-md-12">
-            <button type="submit" class="btn btn-primary">Registrovat</button>
-        </div>
 
+        <div class="form-group col-md-12">
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary">Registrovat</button>
+            </div>
+            <a href="#" onclick="history.go(-1)" class="btn btn-default col-md-1">
+                Zpět
+            </a>
+        </div>
 }
-<a href="#" onclick="history.go(-1)" class="btn btn-default">
-    Zpět
-</a>
+
 <script type="text/javascript">
     $(function () {
         $('#Birthdate').datetimepicker({

@@ -10,10 +10,14 @@
     <title>Fitness</title>
 
     <!-- Bootstrap core CSS -->
-    <script src="@Url.Content("~/Scripts/jquery-1.9.1.min.js")"></script>
+    <script type="text/javascript" src="~/Scripts/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/moment.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
     <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet">
     <link href="@Url.Content("~/Content/bootstrap-theme.min.css")" rel="stylesheet">
     <link href="@Url.Content("~/Content/blog.css")" rel="stylesheet">
+    <link href="@Url.Content("~/Content/bootstrap-datetimepicker.css")" rel="stylesheet">
 
     <script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")"></script>
     <script src="@Url.Content("~/Scripts/MicrosoftAjax.js")"></script>
@@ -30,7 +34,8 @@
             <a class="blog-nav-item @(ViewBag.Mark == null ? "active" : "")" href="@Url.Action("Index", "Home")">Home</a>
             <a class="blog-nav-item @(ViewBag.Mark == "Activity" ? "active" : "")" href="@Url.Action("Index", "Activity")">Aktivity</a>
             <a class="blog-nav-item @(ViewBag.Mark == "Term" ? "active" : "")" href="@Url.Action("Index", "Term")">Termíny</a>
-            <a class="blog-nav-item @(ViewBag.Mark == "Machine" ? "active" : "")" href="@Url.Action("Index", "Machine", new { page = ViewBag.CurrentPage, item = ViewBag.Items})">Stroje</a>            
+            <a class="blog-nav-item @(ViewBag.Mark == "Machine" ? "active" : "")" href="@Url.Action("Index", "Machine", new { page = ViewBag.CurrentPage, item = ViewBag.Items})">Stroje</a> 
+            <a class="blog-nav-item @(ViewBag.Mark == "User" ? "active" : "") navbar-right" href="@Url.Action("CreateUser", "User")" >Registrace</a>
         </nav>
     </div>
 </div>
@@ -75,15 +80,15 @@
         </p>
     </footer>
 
-        <script src="@Url.Content("~/Scripts/jquery-1.9.1.min.js")"></script>
-        <script src="@Url.Content("~/Scripts/jquery.validate-vsdoc.js")"></script>
-        <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")"></script>
-        <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
-        <script src="@Url.Content("~/Scripts/tinymce/tinymce.min.js")"></script>
-        <script>tinyMCE.init({ selector: ".description-area" });</script>
-
-
-
+    <script src="@Url.Content("~/Scripts/jquery-1.9.1.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/moment.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap-datetimepicker.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate-vsdoc.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/tinymce/tinymce.min.js")"></script>
+    <script>tinyMCE.init({ selector: ".description-area" });</script>
 
     </body>
     </html>

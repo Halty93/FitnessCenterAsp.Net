@@ -30,7 +30,7 @@
                 <td>@tDao.GetActualCapacity(t)</td>
                 <td>@t.Activity.Price.ToString("C", new CultureInfo("cs-CZ"))</td>
                 <td class="text-center">
-                    @Html.ActionLink(" ", "Add","Reservation", new { id = t.Id }, new { @class = "glyphicon glyphicon-pencil btn btn-default" })
+                    @Html.ActionLink(" ", "Add","Reservation", new { termId = t.Id }, new { @class = "glyphicon glyphicon-pencil btn btn-default" })
                 </td>
             </tr>
         }
