@@ -13,16 +13,9 @@ namespace FitnessCenter.Controllers
 {
     public class UserController : Controller
     {
-        // GET: FitnessUser
-        //public ActionResult Index()
-        //{
-        //    UserDao uDao = new UserDao();
-        //    IList<FitnessUser> users = uDao.GetAll();
-        //    return View(users);
-        //}
-
         public ActionResult CreateUser()
         {
+            ViewBag.Mark = "User";
             return View();
         }
 

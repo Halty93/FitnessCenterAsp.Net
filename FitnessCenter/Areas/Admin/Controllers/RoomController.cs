@@ -24,6 +24,7 @@ namespace FitnessCenter.Areas.Admin.Controllers
 
         public ActionResult Create()
         {
+            ViewBag.Mark = "Room";
             return View();
         }
 
@@ -35,7 +36,16 @@ namespace FitnessCenter.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
                     RoomDao rDao = new RoomDao();
-                    rDao.Create(room);
+                  
+                    if (rDao.RoomExist(room.Name) == false)
+                    {
+                        rDao.Create(room);
+                    }
+                    else
+                    {
+                        TempData["warning"] = "Stroj pod tímto názvem již existuje!";
+                        return View("Create", room);
+                    }
 
                     TempData["succes"] = "Místnost úspěšně přidána.";
                 }
@@ -55,6 +65,7 @@ namespace FitnessCenter.Areas.Admin.Controllers
         public ActionResult Edit(int id)
         {
             RoomDao rDao = new RoomDao();
+            ViewBag.Mark = "Room";
 
             return View(rDao.GetById(id));
         }
@@ -68,10 +79,8 @@ namespace FitnessCenter.Areas.Admin.Controllers
                 if (ModelState.IsValid)
                 {
                     RoomDao rDao = new RoomDao();
-                    if (room.MaxCapacity != rDao.GetById(room.Id).MaxCapacity)
-                    {
-                        Room.CapacityCheck(room);
-                    }
+                    Room.CapacityCheck(room);
+                    
                     rDao.Update(room);
 
                     TempData["succes"] = "Místnost úspěšně upravena.";
@@ -90,7 +99,6 @@ namespace FitnessCenter.Areas.Admin.Controllers
         }
 
         //pridat upozorneni pro vypsane teminy
-        [HttpPost]
         public ActionResult Delete(int id)
         {
             try

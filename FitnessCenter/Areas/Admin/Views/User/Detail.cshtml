@@ -1,0 +1,73 @@
+﻿@model DataAccess.Model.FitnessUser
+@{
+    ViewBag.Title = "Detail";
+}
+
+
+<h2>Profil: @Model.Name @Model.Surname</h2>
+
+<div class="col-sm-3 text-center">
+    @if (Model.BigImageName != null)
+    {
+        <img src="~/Uploads/User/@Model.BigImageName" alt="Ikona uživatele" class="img-circle sidebar-module" />
+    }
+    else
+    {
+        <img src="~/Uploads/User/noUserPicture.png" alt="Ikona uživatele" class="img-circle sidebar-module" />
+    }
+</div>
+<div class="col-sm-7">
+
+    <p>
+        Jméno a příjmení: @Model.Name @Model.Surname <br>
+        Datum narození: @Model.Birthdate.ToString("d.M.yyyy") <br>
+        Rodné číslo: @Model.BirthNumber
+    </p>
+
+    <p>
+        Login: @Model.Login
+    </p>
+
+    <address>
+        @Model.Address.Street @Model.Address.StreetNumber<br>
+        @Model.Address.Town, @Model.Address.Zip<br>
+        Telefon: @Model.PhoneNumber<br>
+        Email:<a href="mailto:@Model.Email">@Model.EmailAddress</a>
+    </address>
+    @if (Model.Role.Name == "Trenér" || Model.Role.Name == "Údržbář")
+    {
+        <p>
+            Zaměstnán: Ano
+        </p>
+        if (Model.Role.Name == "Trenér")
+        {
+            <p>
+                Licence: @Model.LicenceList
+            </p>
+        }
+    }
+
+</div>
+<div class="clearfix"></div>
+
+@if (User.Identity.Name == Model.Login)
+{
+    <a href="@Url.Action("EditLog", "User", new {id = Model.Id})" class="btn btn-primary">
+        Upravit přihlašovací údaje
+    </a>
+    <a href="@Url.Action("EditUser", "User", new {id = Model.Id})" class="btn btn-primary">
+        Upravit osobní údaje
+    </a>
+    <a href="@Url.Action("EditUser", "User", new {id = Model.Id})" class="btn btn-primary">
+        Upravit adresu
+    </a>
+    if (Model.Role.Name == "Zákazník")
+    {
+        <a href="@Url.Action("Delete", "User", new {id = Model.Id})" class="btn btn-danger glyphicon-trash">
+            Smazat
+        </a>
+    }
+}
+<a href="#" onclick="history.go(-1)" class="btn btn-default">
+    Zpět
+</a>

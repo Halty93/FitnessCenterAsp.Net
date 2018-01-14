@@ -33,7 +33,7 @@ namespace DataAccess.Dao
         public IList<Reservation> GetReservationPageByUser(int count, int page, FitnessUser fitnessUser)
         {
             return session.CreateCriteria<Reservation>()
-                .Add(Restrictions.Eq("FitnessUser", fitnessUser))
+                .Add(Restrictions.Eq("User", fitnessUser))
                 .AddOrder(Order.Asc("ReservationTime"))
                 .SetFirstResult((page - 1) * count)
                 .SetMaxResults(count)
@@ -43,7 +43,7 @@ namespace DataAccess.Dao
         public IList<Reservation> GetAllReservationsByUser(FitnessUser fitnessUser)
         {
             return session.CreateCriteria<Reservation>()
-                .Add(Restrictions.Eq("FitnessUser", fitnessUser))
+                .Add(Restrictions.Eq("User", fitnessUser))
                 .List<Reservation>();
         }
 
@@ -68,17 +68,12 @@ namespace DataAccess.Dao
                 .List<Reservation>();
         }
 
-        public IList<Reservation> SearchReservationsByUser(string phrase, int count, int page, FitnessUser fitnessUser)
+        public bool ReservationExist(Term term, FitnessUser user)
         {
             return session.CreateCriteria<Reservation>()
-                .Add(Restrictions.Eq("FitnessUser", fitnessUser))
-                .Add(Restrictions.Like("User.Name", $"%{phrase}%"))
-                .Add(Restrictions.Like("User.Surname", $"%{phrase}%"))
-                .Add(Restrictions.Like("Term.Activity.Name", $"%{phrase}%"))
-                .AddOrder(Order.Asc("ReservationTime"))
-                .SetFirstResult((page - 1) * count)
-                .SetMaxResults(count)
-                .List<Reservation>();
+                .Add(Restrictions.Eq("User", user))
+                .Add(Restrictions.Eq("Term", term))
+                .UniqueResult<Reservation>() == null ? false : true;
         }
     }
 }

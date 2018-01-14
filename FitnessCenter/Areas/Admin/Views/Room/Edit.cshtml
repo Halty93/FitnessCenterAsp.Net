@@ -10,12 +10,8 @@
 @using (Html.BeginForm("Update", "Room", FormMethod.Post, new { @class = "form-horizontal" }))
 {
     @Html.HiddenFor(x => x.Id)
+    @Html.HiddenFor(x => x.Name)
 
-    <div class="form-group">
-        @Html.LabelFor(x => x.Name, "Název")
-        @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
-        @Html.ValidationMessageFor(x => x.Name)
-    </div>
     <div class="form-group">
         @Html.LabelFor(x => x.MaxCapacity, "Maximální kapacita")
         @Html.TextBoxFor(x => x.MaxCapacity, new { @class = "form-control" })
@@ -28,3 +24,6 @@
 
     <button type="submit" class="btn btn-primary">Upravit místnost</button>
 }
+<a href="#" onclick="history.go(-1)" class="btn btn-default">
+    Zpět
+</a>

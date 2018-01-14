@@ -14,7 +14,7 @@ namespace FitnessCenter.Areas.Admin.Controllers
         // GET: Admin/Reservation
         public ActionResult Index(int? page, int? item)
         {
-            int itemsOnPage = item ?? 1;
+            int itemsOnPage = item ?? 5;
             int pg = page ?? 1;
 
             UserDao uDao = new UserDao();
@@ -29,45 +29,21 @@ namespace FitnessCenter.Areas.Admin.Controllers
             {
                 res = rDao.GetReservationPage(itemsOnPage, pg);
             }
-                
-            ViewBag.Pages = (int)Math.Ceiling((double)res.Count / (double)itemsOnPage);
+
+            ViewBag.Pages = (int)Math.Ceiling((double)rDao.GetAll().Count / (double)itemsOnPage);
             ViewBag.CurrentPage = pg;
             ViewBag.Items = itemsOnPage;
             ViewBag.Mark = "Reservation";
 
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView(res);
+            }
             return View(res);
         }
 
-        public ActionResult Search(string phrase, int? page, int? item)
-        {
-            int itemsOnPage = item ?? 1;
-            int pg = page ?? 1;
-
-            UserDao uDao = new UserDao();
-            FitnessUser u = uDao.GetByLogin(User.Identity.Name);
-            ReservationDao rDao = new ReservationDao();
-            IList<Reservation> res = null;
-            if (u.Role.Name == "Zákazník")
-            {
-                res = rDao.SearchReservationsByUser(phrase, itemsOnPage, pg, u);
-            }
-            else
-            {
-                res = rDao.SearchReservations(phrase, itemsOnPage, pg);
-            }
-
-
-            ViewBag.Pages = (int)Math.Ceiling((double)res.Count / (double)itemsOnPage);
-            ViewBag.CurrentPage = pg;
-            ViewBag.Items = itemsOnPage;
-            ViewBag.Phrase = phrase;
-            ViewBag.Mark = "Reservation";
-
-            return View("Index", res);
-        }
-
         //rezervace se bude zadavat v planu terminu
-        [HttpPost]
+        //[HttpPost]
         public ActionResult Add(int termId)
         {
             try
@@ -81,7 +57,7 @@ namespace FitnessCenter.Areas.Admin.Controllers
                 r.User = uDao.GetByLogin(User.Identity.Name);
                 r.ReservationTime = DateTime.Now;
 
-                if (r.Term.Capacity > tDao.GetActualCapacity(r.Term))
+                if (tDao.GetActualCapacity(r.Term)>0 && rDao.ReservationExist(r.Term, r.User) == false)
                 {
                     rDao.Create(r);
                     TempData["succes"] = "Termín úspěšně rezervován.";

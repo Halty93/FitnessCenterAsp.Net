@@ -5,27 +5,6 @@
 }
 
 <h2>Posilovací stroje</h2>
-<div class="panel">
-    @*navigace pro kategorie*@
-    <div class="panel-body" role="tabpanel">
-        <ul class="nav nav-pills nav-justified">
-            <li role="presentation" class="@(ViewBag.CurrentStatus == null ? "active" : "")">
-                <a href="@Url.Action("Index", "Machine", new { page = ViewBag.CurrentPage, item = ViewBag.Items })">Všichni uživatelé</a>
-                @*@Ajax.ActionLink(Convert.ToString("Všichni uživatelé"), "Index", new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })*@
-            </li>
-
-            <li role="presentation" class="@(ViewBag.CurrentStatus == "V pořádku" ? "active" : "")">
-                <a href="@Url.Action("Status", "Machine", new { status = "V pořádku", page = ViewBag.CurrentPage, item = ViewBag.Items })">V pořádku</a>
-                @*@Ajax.ActionLink(r.Name, "Role", new { id = r.Id, page = ViewBag.CurrentPage, item = ViewBag.Items }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })*@
-            </li>
-
-            <li role="presentation" class="@(ViewBag.CurrentStatus == "Poškozený" ? "active" : "")">
-                <a href="@Url.Action("Status", "Machine", new { status = "Poškozený", page = ViewBag.CurrentPage, item = ViewBag.Items })">Poškozený</a>
-                @*@Ajax.ActionLink(r.Name, "Role", new { id = r.Id, page = ViewBag.CurrentPage, item = ViewBag.Items }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })*@
-            </li>
-        </ul>
-    </div>
-</div>
 
 @foreach (Machine m in Model)
 {
@@ -45,18 +24,18 @@
             <thead>
                 <tr>
                     <th>
-                        @m.Name
+                        @Ajax.ActionLink(m.Name, "Detail", new { id = m.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })
                     </th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
                     <td>Poslední kontrola</td>
-                    <td>@m.LastCheck</td>
+                    <td>@m.LastCheck.ToString("d.M.yyyy")</td>
                 </tr>
                 <tr>
                     <td>Následující kontrola</td>
-                    <td>@m.NextCheck</td>
+                    <td>@m.NextCheck.ToString("d.M.yyyy")</td>
                 </tr>
                 <tr>
                     <td>Popis</td>
@@ -85,7 +64,7 @@
         @for (int i = 5; i <= 20; i *= 2)
         {
             <li class="@(ViewBag.Items == i ? "active" : "") text-right">
-                <a href="@Url.Action("Index", "Machine", new {page = ViewBag.CurrentPage, item = i})">@i</a>
+                @Ajax.ActionLink(i.ToString(), "Index", new { page = ViewBag.CurrentPage, item = i }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })
             </li>
         }
     </ul>
@@ -98,7 +77,7 @@
             @for (int i = 1; i <= ViewBag.Pages; i++)
             {
                 <li class="@(ViewBag.CurrentPage == i ? "active" : "")">
-                    <a href="@Url.Action("Index", "Machine", new {page = i, item = ViewBag.Items})">@i</a>
+                    @Ajax.ActionLink(i.ToString(), "Index", new { page = i, item = ViewBag.Items }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })
                 </li>
             }
         </ul>

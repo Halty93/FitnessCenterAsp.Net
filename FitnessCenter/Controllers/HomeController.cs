@@ -24,15 +24,15 @@ namespace FitnessCenter.Controllers
         {
             UserDao uDao = new UserDao();
             FitnessUser u = uDao.GetByLogin(login);
-            //if (u != null && PasswordHash.ValidatePassword(password, u.Password))
-            //{
-            //    password = u.Password;
-            //}
-            //else
-            //{
-            //    TempData["error"] = "Přihlašovací údaje nejsou správné";
-            //    return RedirectToAction("Index");
-            //}
+            if (u != null && PasswordHash.ValidatePassword(password, u.Password))
+            {
+                password = u.Password;
+            }
+            else
+            {
+                TempData["error"] = "Přihlašovací údaje nejsou správné";
+                return RedirectToAction("Index");
+            }
 
             if (Membership.ValidateUser(login, password))
             {

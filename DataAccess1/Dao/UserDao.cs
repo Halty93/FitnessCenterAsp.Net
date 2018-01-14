@@ -42,33 +42,6 @@ namespace DataAccess.Dao
                 .List<FitnessUser>();
         }
 
-        public IList<FitnessUser> SearchUsers(string phrase, int count, int page, int? roleId)
-        {
-            IList<FitnessUser> users = new List<FitnessUser>();
-            if (roleId != null)
-            {
-                users = session.CreateCriteria<FitnessUser>()
-                    .Add(Restrictions.Like("Name", $"%{phrase}%"))
-                    .Add(Restrictions.Like("Surname", $"%{phrase}%"))
-                    .Add(Restrictions.Eq("Role.Id", roleId))
-                    .AddOrder(Order.Asc("Surname"))
-                    .SetFirstResult((page - 1) * count)
-                    .SetMaxResults(count)
-                    .List<FitnessUser>();
-            }
-            else
-            {
-                users = session.CreateCriteria<FitnessUser>()
-                    .Add(Restrictions.Like("Name", $"%{phrase}%"))
-                    .Add(Restrictions.Like("Surname", $"%{phrase}%"))
-                    .AddOrder(Order.Asc("Surname"))
-                    .SetFirstResult((page - 1) * count)
-                    .SetMaxResults(count)
-                    .List<FitnessUser>();
-            }
-            return users;
-        }
-
         public IList<FitnessUser> GetUsersByRole(int count, int page,  int id)
         {
             return session.CreateCriteria<FitnessUser>()
@@ -77,6 +50,13 @@ namespace DataAccess.Dao
                 .SetFirstResult((page - 1) * count)
                 .SetMaxResults(count)
                 .List<FitnessUser>();
+        }
+
+        public bool LoginExist(string login)
+        {
+            return session.CreateCriteria<FitnessUser>()
+                .Add(Restrictions.Eq("Login", login))
+                .UniqueResult<FitnessUser>() == null ? false : true;
         }
     }
 }

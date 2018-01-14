@@ -10,28 +10,32 @@
     <title>Fitness</title>
 
     <!-- Bootstrap core CSS -->
-
+    <script src="@Url.Content("~/Scripts/jquery-1.9.1.min.js")"></script>
     <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet">
     <link href="@Url.Content("~/Content/bootstrap-theme.min.css")" rel="stylesheet">
     <link href="@Url.Content("~/Content/blog.css")" rel="stylesheet">
+
+    <script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/MicrosoftAjax.js")"></script>
+    <script src="@Url.Content("~/Scripts/MicrosoftMvcAjax.js")"></script>
 </head>
 
 <body>
 
     
     
-<div class="blog-masthead">
+<div class="blog-masthead" >
     <div class="container">
         <nav class="blog-nav">
             <a class="blog-nav-item @(ViewBag.Mark == null ? "active" : "")" href="@Url.Action("Index", "Home")">Home</a>
             <a class="blog-nav-item @(ViewBag.Mark == "Activity" ? "active" : "")" href="@Url.Action("Index", "Activity")">Aktivity</a>
             <a class="blog-nav-item @(ViewBag.Mark == "Term" ? "active" : "")" href="@Url.Action("Index", "Term")">Termíny</a>
-            <a class="blog-nav-item @(ViewBag.Mark == "Machine" ? "active" : "")" href="@Url.Action("Index", "Machine")">Stroje</a>            
+            <a class="blog-nav-item @(ViewBag.Mark == "Machine" ? "active" : "")" href="@Url.Action("Index", "Machine", new { page = ViewBag.CurrentPage, item = ViewBag.Items})">Stroje</a>            
         </nav>
     </div>
 </div>
 
-<div class="container">
+<div class="container" style="padding-top:15px">
 
         <div class="row">
             <div class="col-sm-12 blog-main">
@@ -40,16 +44,20 @@
                     <div class="alert alert-success" role="alert">
                         @TempData["succes"]
                     </div>
-                }else if (TempData["warning"] != null)
+                }
+                else if (TempData["warning"] != null)
                 {
                     <div class="alert alert-warning" role="alert">
                         @TempData["warning"]
                     </div>
                 }
-                @RenderSection("Sidebar",false)
-                @RenderBody()
-
-            </div><!-- /.blog-main -->
+                <div  class="sidebar-module">
+                    @RenderSection("Sidebar", false)
+                </div>
+                <div style="margin-left:50px" class="col-md-8" id="dynamicContent">
+                    @RenderBody()
+                </div>
+                </div><!-- /.blog-main -->
 
             @*<DIV CLASS="COL-SM-3 OFFSET-SM-1 BLOG-SIDEBAR">
                 <DIV CLASS="SIDEBAR-MODULE SIDEBAR-MODULE-INSET">

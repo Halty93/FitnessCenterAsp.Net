@@ -5,62 +5,76 @@
 
 <h2>Úprava zaměstnace</h2>
 
-@Html.ValidationSummary()
-
 @using (Html.BeginForm("UpdateEmployee", "User", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
 {
     @Html.HiddenFor(x => x.Id)
-    @Html.HiddenFor(x => x.Address)
     @Html.HiddenFor(x => x.SmallImageName)
     @Html.HiddenFor(x => x.BigImageName)
     @Html.HiddenFor(x => x.Login)
     @Html.HiddenFor(x => x.Password)
+    <input type="hidden" value="@Model.Address.Id" name="addressId" />
+    <input type="hidden" value="@Model.Role.Id" name="roleId" />
+    <input type="hidden" value="@Model.Password" name="ConfirmPassword" />
 
-    <div class="form-group">
+    <div class="form-group col-md-7">
         @Html.LabelFor(x => x.Name, "Jméno")
         @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
         @Html.ValidationMessageFor(x => x.Name)
     </div>
-    <div class="form-group">
+    <div class="form-group col-md-7">
         @Html.LabelFor(x => x.Surname, "Příjmení")
         @Html.TextBoxFor(x => x.Surname, new { @class = "form-control" })
         @Html.ValidationMessageFor(x => x.Surname)
     </div>
-    <div class="form-group">
-        @Html.LabelFor(x => x.Birthdate, "Datum narození")
-        @Html.TextBoxFor(x => x.Birthdate, new { @class = "form-control" })
-        @Html.ValidationMessageFor(x => x.Birthdate)
+    <div class="form-group col-md-7">
+        <label for="Birthdate" class="control-label">Datum narození</label>
+        <div class='input-group date col-md-5' id='Birthdate'>
+            <input type='text' id="Birthdate" name="Birthdate" class="form-control" value=@Model.Birthdate />
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+        </div>
     </div>
-    <div class="form-group">
+    <div class="form-group col-md-7">
         @Html.LabelFor(x => x.BirthNumber, "Rodné číslo (bez lomítka)")
         @Html.TextBoxFor(x => x.BirthNumber, new { @class = "form-control" })
         @Html.ValidationMessageFor(x => x.BirthNumber)
     </div>
-    <div class="form-group">
+    <div class="form-group col-md-7">
         @Html.LabelFor(x => x.EmailAddress, "EmailAddress")
         @Html.TextBoxFor(x => x.EmailAddress, new { @class = "form-control" })
         @Html.ValidationMessageFor(x => x.EmailAddress)
     </div>
-    <div class="form-group">
+    <div class="form-group col-md-7">
         @Html.LabelFor(x => x.PhoneNumber, "Telefon")
         @Html.TextBoxFor(x => x.PhoneNumber, new { @class = "form-control" })
         @Html.ValidationMessageFor(x => x.PhoneNumber)
     </div>
-    <div class="form-group">
+    <div class="form-group col-md-7">
         @Html.LabelFor(x => x.LicenceList, "Seznam licencí")
         @Html.TextBoxFor(x => x.LicenceList, new { @class = "form-control" })
         @Html.ValidationMessageFor(x => x.LicenceList)
     </div>
-    <div class="form-group">
-        @Html.DropDownList("roleId", new SelectList(ViewBag.Roles, "Name", "id"), new { @class = "form-control" })
-    </div>
-    <div class="form-group">
+
+    <div class="form-group col-md-7">
         <input type="file" class="btn btn-default" name="picture" />
         @if (Model.SmallImageName != null)
         {
-            <img src="@Url.Content("~/Uploads/FitnessUser/" + Model.SmallImageName)"/>
+            <img src="@Url.Content("~/Uploads/FitnessUser/" + Model.SmallImageName)" />
             @Html.ActionLink("Smazat obrázek", "DeletePicture", "User", new { id = Model.Id, view = "Emp" }, new { @class = "btn btn-danger" })
         }
     </div>
-    <button type="submit" class="btn btn-primary">Upravit zaměstnance</button>
+    <div class="col-md-12">
+        <button type="submit" class="btn btn-primary">Upravit zaměstnance</button>
+    </div>
 }
+<a href="#" onclick="history.go(-1)" class="btn btn-default">
+    Zpět
+</a>
+<script type="text/javascript">
+    $(function () {
+        $('#Birthdate').datetimepicker({
+            format: 'DD.MM.YYYY'
+        });
+    });
+</script>

@@ -15,7 +15,7 @@ namespace FitnessCenter.Areas.Admin.Controllers
         // GET: Admin/Machine
         public ActionResult Index(int? page, int? item)
         {
-            int itemsOnPage = item ?? 1;
+            int itemsOnPage = item ?? 5;
             int pg = page ?? 1;
 
             MachineDao mDao = new MachineDao();
@@ -23,16 +23,40 @@ namespace FitnessCenter.Areas.Admin.Controllers
             UserDao uDao = new UserDao();
             FitnessUser u = uDao.GetByLogin(User.Identity.Name);
 
-            ViewBag.Pages = (int)Math.Ceiling((double)machs.Count / (double)itemsOnPage);
+            ViewBag.Pages = (int)Math.Ceiling((double)mDao.GetAll().Count / (double)itemsOnPage);
             ViewBag.CurrentPage = pg;
             ViewBag.Items = itemsOnPage;
             ViewBag.Mark = "Machine";
-            
-            if(u.Role.Name != "Údržbář")
+
+            if (Request.IsAjaxRequest())
             {
-                return View("CustomerIndex", machs);
+                if (u.Role.Name != "Údržbář")
+                {
+                    return PartialView("CustomerIndex", machs);
+                }
+                return PartialView(machs);
             }
-            return View(machs);
+            else
+            {
+                if (u.Role.Name != "Údržbář")
+                {
+                    return View("CustomerIndex", machs);
+                }
+                return View(machs);
+            }
+        }
+
+        [Authorize(Roles = "Údržbář")]
+        public ActionResult Detail(int id)
+        {
+            MachineDao mDao = new MachineDao();
+            Machine mach = mDao.GetById(id);
+            ViewBag.Mark = "Machine";
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView(mach);
+            }
+            return View(mach);
         }
 
         public ActionResult Status(string status, int? page, int? item)
@@ -49,11 +73,12 @@ namespace FitnessCenter.Areas.Admin.Controllers
 
             ViewBag.Roles = new RoleDao().GetAll();
             ViewBag.CurrentStatus = status;
+            ViewBag.Mark = "Machine";
 
-            //if (Request.IsAjaxRequest())
-            //{
-            //    return PartialView("Index", users);
-            //}
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("Index", machs);
+            }
             return View("Index", machs);
         }
 
@@ -82,12 +107,20 @@ namespace FitnessCenter.Areas.Admin.Controllers
                         mach.SmallImageName = smallImageName;
                     }
                     MachineDao mDao = new MachineDao();
-                    UserDao uDao = new UserDao();
 
-                    mach.Repairman = uDao.GetByLogin(User.Identity.Name);
-                    mach.Status = "V pořádku";
+                    bool isExist = mDao.MachineExist(mach.Name);
+                    if (isExist == false)
+                    {
+                        UserDao uDao = new UserDao();
+                        mach.Repairman = uDao.GetByLogin(User.Identity.Name);
 
-                    mDao.Create(mach);
+                        mDao.Create(mach);
+                    }
+                    else
+                    {
+                        TempData["warning"] = "Stroj pod tímto názvem již existuje!";
+                        return View("Create", mach);
+                    }
                 }
                 else
                 {
@@ -109,12 +142,13 @@ namespace FitnessCenter.Areas.Admin.Controllers
         public ActionResult EditFault(int id)
         {
             MachineDao mDao = new MachineDao();
+            ViewBag.Mark = "Machine";
 
             return View(mDao.GetById(id));
         }
 
         [HttpPost]
-        public ActionResult UpdateFault(Machine m)
+        public ActionResult UpdateFault(Machine m, int repairmanId)
         {
             try
             {
@@ -124,6 +158,7 @@ namespace FitnessCenter.Areas.Admin.Controllers
                     UserDao uDao = new UserDao();
 
                     m.FaultUser = uDao.GetByLogin(User.Identity.Name);
+                    m.Repairman = uDao.GetById(repairmanId);
                     m.FaultDate = DateTime.Today;
                     m.Status = "Poškozený";
 
@@ -150,6 +185,7 @@ namespace FitnessCenter.Areas.Admin.Controllers
         {
             MachineDao mDao = new MachineDao();
             ViewBag.Stats = Machine.StatsList;
+            ViewBag.Mark = "Machine";
 
             return View(mDao.GetById(id));
         }

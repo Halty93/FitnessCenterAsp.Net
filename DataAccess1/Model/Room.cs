@@ -34,9 +34,9 @@ namespace DataAccess.Model
             foreach (Term t in terms)
             {
                 //pokud je u nektereho terminu nastavena vetsi kapacita nez je nova maximalni kapacita mistnosti, zmen kapacitu terminu na max.kapacitu mistnosti
-                if (r.MaxCapacity < t.Capacity)
+                if (r.MaxCapacity < t.Capacity && t.EndTerm > DateTime.Now)
                 {
-                    int uCount = tDao.GetActualCapacity(t) - r.MaxCapacity;
+                    int uCount = r.MaxCapacity - (t.Capacity - tDao.GetActualCapacity(t));
                     //pokud je prihlaseno vice lidi nez nova max.kapacita mistnosti, odstran rezervace poslednich prihlasenych
                     if (uCount > 0)
                     {

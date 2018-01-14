@@ -10,45 +10,37 @@
     @Html.HiddenFor(x => x.Id)
     @Html.HiddenFor(x => x.BigImageName)
     @Html.HiddenFor(x => x.SmallImageName)
-    @Html.HiddenFor(x => x.Role)
     @Html.HiddenFor(x => x.Name)
     @Html.HiddenFor(x => x.Surname)
-    @Html.HiddenFor(x => x.Address)
     @Html.HiddenFor(x => x.LicenceList)
     @Html.HiddenFor(x => x.BirthNumber)
     @Html.HiddenFor(x => x.EmailAddress)
     @Html.HiddenFor(x => x.PhoneNumber)
     @Html.HiddenFor(x => x.Birthdate)
+    <input type="hidden" value="@Model.Address.Id" name="addressId" />
+    <input type="hidden" value="@Model.Role.Id" name="roleId" />
 
-    <div class="form-inline form-group">
-
-        <div class="col-sm-4">
-            <label class="col-sm-4 control-label">Login *</label>
-            <div class="col-sm-6">
+    <div class="col-md-5">
+        <div class="form-group">
+                @Html.LabelFor(x => x.Login, "Login")
                 @Html.TextBoxFor(x => x.Login, new { @class = "form-control" })
                 @Html.ValidationMessageFor(x => x.Login)
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <label class="col-sm-4 control-label">Heslo *</label>
-            <div class="col-sm-6">
-                @Html.TextBoxFor(x => x.Password, new { @class = "form-control", @type = "password" })
+      
+                @Html.LabelFor(x => x.Password, "Heslo")
+                <input type="password" name="Password" class = "form-control" />
                 @Html.ValidationMessageFor(x => x.Password)
-            </div>
-        </div>
-
-        <div class="col-sm-4">
-            <label class="col-sm-4 control-label">Potvrzení hesla *</label>
-            <div class="col-sm-6">
+            
+                @Html.LabelFor(x => x.ConfirmPassword, "Potvrzení hesla")
                 @Html.TextBoxFor(x => x.ConfirmPassword, new { @class = "form-control", @type = "password" })
                 @Html.ValidationMessageFor(x => x.ConfirmPassword)
-            </div>
         </div>
     </div>
-    <p style="font-size: 13px">Údaje označené(*) jsou povinné.</p>
-    <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
+    <div class="form-group col-md-12">
+       
             <button type="submit" class="btn btn-default">Upravit údaje</button>
-        </div>
+
     </div>
 }
+<a href="#" onclick="history.go(-1)" class="btn btn-default">
+    Zpět
+</a>

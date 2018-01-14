@@ -33,6 +33,7 @@ namespace FitnessCenter.Areas.Admin.Controllers
         [Authorize(Roles = "Trenér")]
         public ActionResult Create()
         {
+            ViewBag.Mark = "Activity";
             return View();
         }
 
@@ -56,11 +57,19 @@ namespace FitnessCenter.Areas.Admin.Controllers
                     }
 
                     ActivityDao aDao = new ActivityDao();
-                    UserDao uDao = new UserDao();
+                    bool isExist = aDao.ActivityExist(act.Name);
+                    if (isExist == false)
+                    {
+                        UserDao uDao = new UserDao();
+                        act.Author = uDao.GetByLogin(User.Identity.Name);
 
-                    act.Author = uDao.GetByLogin(User.Identity.Name);
-
-                    aDao.Create(act);
+                        aDao.Create(act);
+                    }
+                    else
+                    {
+                        TempData["warning"] = "Aktivita pod tímto názvem již existuje!";
+                        return View("Create", act);
+                    }
                 }
                 else
                 {
@@ -85,12 +94,13 @@ namespace FitnessCenter.Areas.Admin.Controllers
         [Authorize(Roles = "Trenér")]
         public ActionResult Edit(int id)
         {
+            ViewBag.Mark = "Activity";
             ActivityDao aDao = new ActivityDao();
             return View(aDao.GetById(id));
         }
 
         [HttpPost]
-        public ActionResult Update(Activity act, HttpPostedFileBase picture)
+        public ActionResult Update(Activity act, HttpPostedFileBase picture, int authorId)
         {
             try
             {
@@ -113,7 +123,8 @@ namespace FitnessCenter.Areas.Admin.Controllers
                     }
 
                     ActivityDao aDao = new ActivityDao();
-
+                    UserDao userDao = new UserDao();
+                    act.Author = userDao.GetById(authorId);
                     aDao.Update(act);
                 }
                 else

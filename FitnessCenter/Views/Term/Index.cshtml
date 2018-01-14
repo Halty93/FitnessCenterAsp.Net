@@ -36,4 +36,28 @@
     </tbody>
 </table>
 <div class ="clearfix"></div>           
-<a href="@Url.Action("Create","Term")" class="btn btn-primary">Vytvořit termín</a>
+
+@section Sidebar
+{
+    <div class="col-sm-3">
+        <div class="sidebar-module sidebar-module-inset">
+            @using (Html.BeginForm("SignIn", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
+            {
+
+                <div class="form-group form-group-sm">
+                    <label for="inputUserName" class="col-sm-4 control-label">Login</label>
+                    <div class="col-xs-8">
+                        <input type="text" class="form-control input-sm" id="inputUserName" placeholder="User Name" name="Login">
+                    </div>
+                </div>
+                <div class="form-group form-group-sm ">
+                    <label for="inputPassword" class="col-sm-4 control-label">Heslo</label>
+                    <div class="col-xs-8">
+                        <input type="password" class="form-control input-sm" id="inputPassword" placeholder="Password" name="Password">
+                    </div>
+                </div>
+                <button class="btn btn-block btn-primary" type="submit">Přihlásit se</button>
+            }
+        </div>
+    </div><!-- /.blog-sidebar -->
+}

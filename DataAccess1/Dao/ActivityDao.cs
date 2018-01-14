@@ -13,6 +13,12 @@ namespace DataAccess.Dao
         public ActivityDao() : base()
         {           
         }
-        
+
+        public bool ActivityExist(string name)
+        {
+            return session.CreateCriteria<Activity>()
+                .Add(Restrictions.Eq("Name", name))
+                .UniqueResult<Activity>() == null ? false : true;
+        }
     }
 }

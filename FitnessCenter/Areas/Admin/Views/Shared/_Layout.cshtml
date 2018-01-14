@@ -14,83 +14,135 @@
     <link rel="icon" href="../../../../favicon.ico">
 
     <title>Fitness</title>
-
+    
     <!-- Bootstrap core CSS -->
     <script type="text/javascript" src="~/Scripts/jquery-1.9.1.min.js"></script>
-    <script type="text/javascript" src="~/Scripts/moment.min.js"></script>
     <script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>
-    <script type="text/javascript" src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
+     <script type="text/javascript" src="~/Scripts/moment.min.js"></script>
+     <script type="text/javascript" src="~/Scripts/bootstrap-datetimepicker.min.js"></script>
     <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet">
     <link href="@Url.Content("~/Content/bootstrap-theme.min.css")" rel="stylesheet">
     <link href="@Url.Content("~/Content/blog.css")" rel="stylesheet">
     <link href="@Url.Content("~/Content/bootstrap-datetimepicker.css")" rel="stylesheet">
+
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Scripts/MicrosoftAjax.js"></script>
+    <script src="~/Scripts/MicrosoftMvcAjax.js"></script>
 </head>
 
 <body>
-<div class="blog-masthead">
-    <div class="container">
-        <nav class="blog-nav">
-            <a class="blog-nav-item @(ViewBag.Mark == null ? "active" : "")" href="@Url.Action("Index", "Home")">Home</a>
-            <a class="blog-nav-item @(ViewBag.Mark == "Term" ? "active" : "")" href="@Url.Action("Index", "Term")">Termíny</a>
-            <a class="blog-nav-item @(ViewBag.Mark == "Reservation" ? "active" : "")" href="@Url.Action("Index", "Reservation")">Rezervace</a>
-            <a class="blog-nav-item @(ViewBag.Mark == "Activity" ? "active" : "")" href="@Url.Action("Index", "Activity")">Aktivity</a>
-            <a class="blog-nav-item @(ViewBag.Mark == "Machine" ? "active" : "")" href="@Url.Action("Index", "Machine")">Stroje</a>   
-            @if (currentUser.Role.Name == "Ředitel")
-            {
-                <a class="blog-nav-item @(ViewBag.Mark == "Room" ? "active" : "")" href="@Url.Action("Index", "Room")">Místnosti</a>
-                <a class="blog-nav-item @(ViewBag.Mark == "User" ? "active" : "")" href="@Url.Action("Index", "User")">Uživatelé</a>
-            }
-            <a class="blog-nav-item" href="@Url.Action("Logout", "Home")">Odhlásit se</a>         
-        </nav>
+    <div class="blog-masthead">
+        <div class="container">
+            <nav class="blog-nav">
+                    <ul class="navbar-nav mr-auto list-unstyled">
+                        <li class="nav-item">
+                            <a class="blog-nav-item @(ViewBag.Mark == null ? "active" : "")" href="@Url.Action("Index", "Home")">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="blog-nav-item @(ViewBag.Mark == "Term" ? "active" : "")" href="@Url.Action("Index", "Term",  new { currentTerms = ViewBag.CurrentTerm })">Termíny</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="blog-nav-item @(ViewBag.Mark == "Reservation" ? "active" : "")" href="@Url.Action("Index", "Reservation", new { page = ViewBag.CurrentPage, item = ViewBag.Items})">Rezervace</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="blog-nav-item @(ViewBag.Mark == "Activity" ? "active" : "")" href="@Url.Action("Index", "Activity")">Aktivity</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="blog-nav-item @(ViewBag.Mark == "Machine" ? "active" : "")" href="@Url.Action("Index", "Machine", new { page = ViewBag.CurrentPage, item = ViewBag.Items})">Stroje</a>
+                        </li>
+                        @if (currentUser.Role.Name == "Ředitel")
+                        {
+                            <li class="nav-item">
+                                <a class="blog-nav-item @(ViewBag.Mark == "Room" ? "active" : "")" href="@Url.Action("Index", "Room")">Místnosti</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="blog-nav-item @(ViewBag.Mark == "User" ? "active" : "")" href="@Url.Action("Index", "User", new { page = ViewBag.CurrentPage, item = ViewBag.Items})">Uživatelé</a>
+                            </li>
+                        }
+                        <li class="dropdown nav-item">
+                            <a href="#" class="blog-nav-item dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@currentUser.Login<span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li class="nav-item"><a class="blog-nav-item @(ViewBag.Mark == "Profil" ? "active" : "")" href="@Url.Action("Detail", "User", new { @id = currentUser.Id })">Profil</a></li>
+                                <li class="nav-item"><a class="blog-nav-item @(ViewBag.Mark == "Profil" ? "active" : "")" href="@Url.Action("EditUser", "User", new { @id = currentUser.Id })">Upravit osobní udaje</a></li>
+                                <li class="nav-item"><a class="blog-nav-item @(ViewBag.Mark == "Profil" ? "active" : "")" href="@Url.Action("EditLog", "User", new { @id = currentUser.Id })">Upravit přihlašovací udaje</a></li>
+                                <li class="nav-item"><a class="blog-nav-item @(ViewBag.Mark == "Profil" ? "active" : "")" href="@Url.Action("EditAddress", "User", new { @id = currentUser.Id })">Upravit adresu</a></li>
+                                <li class="dropdown-divider"></li>
+                                <li class="nav-item"><a class="blog-nav-item" href="@Url.Action("Logout", "Home")">Odhlásit se</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                @*<a class="blog-nav-item @(ViewBag.Mark == "Reservation" ? "active" : "")" href="@Url.Action("Index", "Reservation")">Rezervace</a>
+                                <a class="blog-nav-item @(ViewBag.Mark == "Activity" ? "active" : "")" href="@Url.Action("Index", "Activity")">Aktivity</a>
+                                <a class="blog-nav-item @(ViewBag.Mark == "Machine" ? "active" : "")" href="@Url.Action("Index", "Machine")">Stroje</a>
+                                @if (currentUser.Role.Name == "Ředitel")
+                                {
+                                    <a class="blog-nav-item @(ViewBag.Mark == "Room" ? "active" : "")" href="@Url.Action("Index", "Room")">Místnosti</a>
+                                    <a class="blog-nav-item @(ViewBag.Mark == "User" ? "active" : "")" href="@Url.Action("Index", "User")">Uživatelé</a>
+                                }
+                                <a class="blog-nav-item dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Uživatel</a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li >
+                                        <a class="dropdown-item" href="@Url.Action("EditUser", "User")">Upravit osobní údaje</a>
+                                    </li>
+                                </ul>
+                                        <a class="dropdown-item" href="@Url.Action("EditAddress", "User")">Upravit adresu</a>
+                                        <a class="dropdown-item" href="@Url.Action("EditLog", "User")">Upravit přihlašovací údaje</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="@Url.Action("Logout", "Home")">Odhlásit se</a>
+                    </div>*@
+            </nav>
+        </div>
     </div>
-</div>
-    <div class="container">
+    <div class="container" style="padding-top:15px">
 
         <div class="row">
             <div class="col-sm-12 blog-main">
+            
                 @if (TempData["succes"] != null)
                 {
                     <div class="alert alert-success" role="alert">
                         @TempData["succes"]
                     </div>
-                }else if (TempData["warning"] != null)
+                }
+                else if (TempData["warning"] != null)
                 {
                     <div class="alert alert-warning" role="alert">
                         @TempData["warning"]
                     </div>
                 }
-                @RenderSection("Sidebar",false)
-                @RenderBody()
+               
+                <div class="col-md-12" id="dynamicContent">
+                    @RenderBody()
+                </div>
 
             </div><!-- /.blog-main -->
-
             @*<DIV CLASS="COL-SM-3 OFFSET-SM-1 BLOG-SIDEBAR">
                 <DIV CLASS="SIDEBAR-MODULE SIDEBAR-MODULE-INSET">*@
-                    @RenderSection("Sidebar", false)
-                @*</div>
-            </div>*@
+            @RenderSection("Sidebar", false)
+            @*</div>
+                </div>*@
 
         </div><!-- /.row -->
 
     </div><!-- /.container -->
-
-    <footer class="blog-footer">
-        <p>
-            <a href="#">Back to top</a>
-        </p>
-    </footer>
-        <script src="@Url.Content("~/Scripts/jquery-1.9.1.min.js")"></script>
-        <script src="@Url.Content("~/Scripts/moment.min.js")"></script>
-        <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
-        <script src="@Url.Content("~/Scripts/bootstrap-datetimepicker.min.js")"></script>     
-        <script src="@Url.Content("~/Scripts/jquery.validate-vsdoc.js")"></script>
-        <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")"></script>
-        <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
-        <script src="@Url.Content("~/Scripts/tinymce/tinymce.min.js")"></script>
-        <script>tinyMCE.init({ selector: ".description-area" });</script>
-
+    @*<footer class="blog-footer">
+            <p>
+                <a href="#">Back to top</a>
+            </p>
+        </footer>*@
+    <script src="@Url.Content("~/Scripts/jquery-1.9.1.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/moment.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap-datetimepicker.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate-vsdoc.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/tinymce/tinymce.min.js")"></script>
+    <script>tinyMCE.init({ selector: ".description-area" });</script>
 
 
 
-    </body>
-    </html>
+
+</body>
+</html>

@@ -13,13 +13,23 @@ namespace FitnessCenter.Controllers
     public class MachineController : Controller
     {
         // GET: Machine
-        public ActionResult Index()
+        public ActionResult Index(int? page, int? item)
         {
+            int itemsOnPage = item ?? 5;
+            int pg = page ?? 1;
+
             MachineDao mDao = new MachineDao();
+            IList<Machine> machs = mDao.GetMachinePage(itemsOnPage, pg);
 
+            ViewBag.Pages = (int)Math.Ceiling((double)mDao.GetAll().Count / (double)itemsOnPage);
+            ViewBag.CurrentPage = pg;
+            ViewBag.Items = itemsOnPage;
             ViewBag.Mark = "Machine";
-
-            return View(mDao.GetAll());
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView(machs);
+            }
+            return View(machs);
         }
     }
 }

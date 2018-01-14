@@ -41,6 +41,7 @@ namespace DataAccess.Model
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd.mm.yyyy}")]
         public virtual DateTime FaultDate { get; set; }
 
+        [AllowHtml]
         public virtual string Fault { get; set; }
 
         public virtual string SmallImageName { get; set; }

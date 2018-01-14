@@ -5,28 +5,22 @@
 @{
     ViewBag.Title = "Termíny";
     TermDao tDao = new TermDao();
+    UserDao uDao = new UserDao();
 }
 
 <h2>Termíny</h2>
 <div class="panel">
     @*navigace pro kategorie*@
     <div class="panel-body" role="tabpanel">
+        <ul class="nav nav-pills nav-justified">
+            <li role="presentation" class="@(ViewBag.CurrentTerm == 1 ? "active" : "")">
+                @Ajax.ActionLink("Nadcházející termíny", "Index", new { currentTerms = 1 }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })
+            </li>
 
-        @if (ViewBag.Roles != null)
-        {
-            <ul class="nav nav-pills nav-justified">
-                <li role="presentation" class="@(ViewBag.CurrentTerm == 1 ? "active" : "")">
-                    <a href="@Url.Action("Index", "Term", new { currentTerms = 1 })">Nadcházející termíny</a>
-                    @*@Ajax.ActionLink(Convert.ToString("Všichni uživatelé"), "Index", new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })*@
-                </li>
-
-                <li role="presentation" class="@(ViewBag.CurrentTerm == 0 ? "active" : "")">
-                    <a href="@Url.Action("Index", "Term", new { currentTerms = 0 })">Uplynulé termíny</a>
-                    @*@Ajax.ActionLink(r.Name, "Role", new { id = r.Id, page = ViewBag.CurrentPage, item = ViewBag.Items }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })*@
-                </li>
-
-            </ul>
-        }
+            <li role="presentation" class="@(ViewBag.CurrentTerm == 0 ? "active" : "")">
+                @Ajax.ActionLink("Uplynulé termíny", "Role", new { currentTerms = 0 }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })
+            </li>
+        </ul>
     </div>
 </div>
 <table class="table table-bordered table-hover table-responsive table-condensed  table-striped">
@@ -37,7 +31,10 @@
             <th>Konec</th>
             <th>Volných míst</th>
             <th>Cena</th>
-            <th>Akce</th>
+            @if (ViewBag.CurrentTerm == 1)
+            {
+                <th>Akce</th>
+            }           
         </tr>
     </thead>
     <tbody>
@@ -49,14 +46,20 @@
                 <td>@t.EndTerm.ToString("d.M.yyyy H:mm")</td>
                 <td>@tDao.GetActualCapacity(t)</td>
                 <td>@t.Activity.Price.ToString("C", new CultureInfo("cs-CZ"))</td>
-                <td class="text-center">
-                    @Html.ActionLink(" ", "Delete", new { id = t.Id }, new { @class = "glyphicon glyphicon-trash btn btn-danger" })
-                    @Html.ActionLink(" ", "Edit", new { id = t.Id }, new { @class = "glyphicon glyphicon-pencil btn btn-default" })
-                </td>
+                @if (ViewBag.CurrentTerm == 1)
+                {
+                    <td class="text-center">
+                        @Html.ActionLink(" ", "Delete", new { id = t.Id }, new { @class = "glyphicon glyphicon-trash btn btn-danger" })
+                        @Html.ActionLink(" ", "Edit", new { id = t.Id }, new { @class = "glyphicon glyphicon-pencil btn btn-default" })
+                    </td>
+                }      
             </tr>
 
         }
     </tbody>
 </table>
 <div class="clearfix"></div>
-<a href="@Url.Action("Create","Term")" class="btn btn-primary">Vytvořit termín</a>
+@if (uDao.GetByLogin(User.Identity.Name).Role.Name == "Trenér")
+{
+    <a href="@Url.Action("Create","Term")" class="btn btn-primary">Vytvořit termín</a>
+}

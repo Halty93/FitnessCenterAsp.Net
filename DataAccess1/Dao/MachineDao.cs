@@ -8,7 +8,7 @@ using NHibernate.Criterion;
 
 namespace DataAccess.Dao
 {
-    public class MachineDao:DaoBase<Machine>
+    public class MachineDao : DaoBase<Machine>
     {
         public MachineDao() : base()
         {
@@ -31,6 +31,13 @@ namespace DataAccess.Dao
                 .SetFirstResult((page - 1) * count)
                 .SetMaxResults(count)
                 .List<Machine>();
+        }
+
+        public bool MachineExist(string name)
+        {
+            return session.CreateCriteria<Machine>()
+                .Add(Restrictions.Eq("Name", name))
+                .UniqueResult<Machine>() == null ? false : true;
         }
     }
 }

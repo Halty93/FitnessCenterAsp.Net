@@ -11,10 +11,6 @@ namespace DataAccess.Model
 {
     public class FitnessUser : MembershipUser, IEntity
     {
-        protected FitnessUser()
-        {
-        }
-
         public virtual int Id { get; set; }
 
         [Required(ErrorMessage = "Jméno uživatele je povinný údaj")]
@@ -32,8 +28,7 @@ namespace DataAccess.Model
         [DataType(DataType.Password)]
         public virtual string Password { get; set; }
 
-        [Required(ErrorMessage = "Potvrzení hesla je povinné")]
-        [Compare("Password")]
+        [Compare("Password", ErrorMessage = "Hesla se neshodují. ")]
         public virtual string ConfirmPassword { get; set; }
 
         [Required(ErrorMessage = "Datum narození je povinný údaj")]

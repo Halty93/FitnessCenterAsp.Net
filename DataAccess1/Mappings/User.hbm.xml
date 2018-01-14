@@ -3,7 +3,7 @@
 
   <class name="FitnessUser" table ="FitnessUser" lazy="false">
     <id name="Id" column="id">
-      <generator class="guid" />
+      <generator class="native" />
     </id>
     <property name="Name" column="name"/>
     <property name="Surname" column="surname"/>

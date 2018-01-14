@@ -5,16 +5,15 @@
 
 <h2>Úprava aktivity @Model.Name</h2>
 
+
 @using (Html.BeginForm("Update", "Activity", FormMethod.Post, new { @class = "form-horizontal", enctype = "multipart/form-data" }))
 {
     @Html.HiddenFor(x=>x.Id)
     @Html.HiddenFor(x => x.BigImageName)
     @Html.HiddenFor(x => x.SmallImageName)
-    <div class="form-group">
-        @Html.LabelFor(x => x.Name, "Název")
-        @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
-        @Html.ValidationMessageFor(x => x.Name)
-    </div>
+    @Html.HiddenFor(x => x.Name)
+    <input type="hidden" value="@Model.Author.Id" name="authorId" />
+   
     <div class="form-group">
         @Html.LabelFor(x => x.Difficultness, "Obtížnost")
         @Html.TextBoxFor(x => x.Difficultness, new { @class = "form-control" })
@@ -37,7 +36,9 @@
             @Html.ActionLink("Smazat obrázek","DeletePicture","Activity",new{id = Model.Id},new{@class = "btn btn-danger"})
         }
     </div>
-
     <button type="submit" class="btn btn-primary">Upravit aktivitu</button>
 }
+<a href="#" onclick="history.go(-1)" class="btn btn-default">
+    Zpět
+</a>
 

@@ -31,11 +31,11 @@
             <tbody>
                 <tr>
                     <td>Poslední kontrola</td>
-                    <td>@m.LastCheck</td>
+                    <td>@m.LastCheck.ToString("d.M.yyyy")</td>
                 </tr>
                 <tr>
                     <td>Následující kontrola</td>
-                    <td>@m.NextCheck</td>
+                    <td>@m.NextCheck.ToString("d.M.yyyy")</td>
                 </tr>
                 <tr>
                     <td>Popis</td>
@@ -45,9 +45,69 @@
                     <td>Stav stroje</td>
                     <td>@m.Status</td>
                 </tr>
+                <tr>
+                    <td>
+                        @Html.ActionLink("Závada na stroji", "EditFault", new { id = m.Id }, new { @class = "btn btn-default" })
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
 }
+<div class="dropdown navbar-right">
+    <label style="font-size: 10px">Počet záznamů na stránce</label>
+    <button class="btn btn-xs btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        @ViewBag.Items
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+        @for (int i = 5; i <= 20; i *= 2)
+        {
+            <li class="@(ViewBag.Items == i ? "active" : "") text-right">
+                @Ajax.ActionLink(i.ToString(), "Index", new { page = ViewBag.CurrentPage, item = i }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })
+            </li>
+        }
+    </ul>
+</div>
+
+<div class="navbar-left">
+    @if (ViewBag.Pages != null)
+    {
+        <ul class="pagination pagination-sm">
+            @for (int i = 1; i <= ViewBag.Pages; i++)
+            {
+                <li class="@(ViewBag.CurrentPage == i ? "active" : "")">
+                    @Ajax.ActionLink(i.ToString(), "Index", new { page = i, item = ViewBag.Items }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })
+                </li>
+            }
+        </ul>
+    }
+</div>
 <div class="clearfix"></div>
-<a href="@Url.Action("Create", "Machine")" class="btn btn-primary">Vytvořit místnost</a>
+
+@section Sidebar
+{
+    <div class="col-sm-3">
+        <div class="sidebar-module sidebar-module-inset">
+            @using (Html.BeginForm("SignIn", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
+            {
+
+                <div class="form-group form-group-sm">
+                    <label for="inputUserName" class="col-sm-4 control-label">Login</label>
+                    <div class="col-xs-8">
+                        <input type="text" class="form-control input-sm" id="inputUserName" placeholder="User Name" name="Login">
+                    </div>
+                </div>
+                <div class="form-group form-group-sm ">
+                    <label for="inputPassword" class="col-sm-4 control-label">Heslo</label>
+                    <div class="col-xs-8">
+                        <input type="password" class="form-control input-sm" id="inputPassword" placeholder="Password" name="Password">
+                    </div>
+                </div>
+                <button class="btn btn-block btn-primary" type="submit">Přihlásit se</button>
+            }
+        </div>
+    </div><!-- /.blog-sidebar -->
+}
+
+

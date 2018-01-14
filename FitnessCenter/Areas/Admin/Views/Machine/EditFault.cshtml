@@ -9,7 +9,7 @@
 {
     @Html.HiddenFor(x => x.Id)
     @Html.HiddenFor(x => x.Name)
-    @Html.HiddenFor(x => x.Repairman)
+    <input type="hidden" value="@Model.Repairman.Id" name="repairmanId" />
     @Html.HiddenFor(x => x.Description)
     @Html.HiddenFor(x => x.BigImageName)
     @Html.HiddenFor(x => x.SmallImageName)
@@ -23,3 +23,6 @@
 
     <button type="submit" class="btn btn-primary">Přidat závadu</button>
 }
+<a href="#" onclick="history.go(-1)" class="btn btn-default">
+    Zpět
+</a>

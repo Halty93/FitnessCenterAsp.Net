@@ -1,0 +1,53 @@
+﻿@model DataAccess.Model.Machine
+@{
+    ViewBag.Title = "Detail";
+}
+<div class="col-sm-12 text-center">
+    @if (Model.BigImageName != null)
+    {
+        <img src="~/Uploads/Machine/@Model.BigImageName" alt="Fotografie motocyklu" class="sidebar-module col-sm-12" style="margin: 0 10px 10px 0" />
+    }
+    else
+    {
+        <img src="~/Uploads/NoPicture.png" alt="Fotografie není k dispozici" />
+    }
+</div>
+<div class="col-sm-5">
+    <p>
+        Název stroje: @Model.Name
+    </p>
+    <p>
+        Poslední kontrola: @Model.LastCheck.ToString("d.M.yyyy")
+    </p>
+    <p>
+        Následující kontrola: @Model.NextCheck.ToString("d.M.yyyy")
+    </p>
+    <p>
+        Údržbář: @Model.Repairman.Name @Model.Repairman.Surname
+    </p>
+    <p>
+        @Html.Raw(Model.Description)
+    </p>
+    <p>
+        Stav stroje: @Model.Status
+    </p>
+    @if (Model.Status == "Poškozený")
+    {
+        <p>
+            Datum poškození: @Model.FaultDate
+        </p>
+        <p>
+            Poškození nahlásil: @Model.FaultUser.Name @Model.FaultUser.Surname
+        </p>
+        <p>
+            Popis poškození:
+            @Html.Raw(Model.Fault)
+        </p>
+    }
+</div>
+<div class="clearfix"></div>
+<a href="#" onclick="history.go(-1)" class="btn btn-default">
+    Zpět
+</a>
+
+

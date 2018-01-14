@@ -12,18 +12,19 @@
         <th>Název</th>
         <th>Kapacita</th>
         <th>Popis</th>
+        <th>Akce</th>
     </tr>
     </thead>
     <tbody>
     @foreach (Room r in Model)
     {
         <tr>
-            <td>
-                @r.Name
-            </td>
+            <td>@r.Name</td>
             <td>@r.MaxCapacity</td>
-            <td>
-                @r.Description
+            <td>@r.Description</td>
+            <td class="text-center">
+                @Html.ActionLink(" ", "Delete", new { id = r.Id }, new { @class = "glyphicon glyphicon-trash btn btn-danger" })
+                @Html.ActionLink(" ", "Edit", new { id = r.Id }, new { @class = "glyphicon glyphicon-pencil btn btn-default" })
             </td>
         </tr>
     }

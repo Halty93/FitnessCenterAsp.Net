@@ -19,34 +19,33 @@ namespace FitnessCenter.Areas.Admin.Controllers
         {
             int itemsOnPage = item ?? 1;
             int pg = page ?? 1;
-
+            AddressDao aDao = new AddressDao();
+            
             UserDao uDao = new UserDao();
             IList<FitnessUser> users = uDao.GetUserPage(itemsOnPage, pg);
-
-            ViewBag.Pages = (int)Math.Ceiling((double)users.Count / (double)itemsOnPage);
+            ViewBag.Pages = (int)Math.Ceiling((double)uDao.GetAll().Count / (double)itemsOnPage);
             ViewBag.CurrentPage = pg;
             ViewBag.Items = itemsOnPage;
+            ViewBag.Roles = new RoleDao().GetAll();
             ViewBag.Mark = "User";
-
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView(users);
+            }
             return View(users);
         }
 
-        public ActionResult Search(string phrase, int? page, int? item, int? roleId)
+        public ActionResult Detail(int id)
         {
-            int itemsOnPage = item ?? 5;
-            int pg = page ?? 1;
-
             UserDao uDao = new UserDao();
-            IList<FitnessUser> users = uDao.SearchUsers(phrase, itemsOnPage, pg, roleId);
-
-            ViewBag.Pages = (int)Math.Ceiling((double)users.Count / (double)itemsOnPage);
-            ViewBag.CurrentPage = pg;
-            ViewBag.Items = itemsOnPage;
-            ViewBag.Phrase = phrase;
+            FitnessUser user = uDao.GetById(id);
+            ViewBag.CurrentUser = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
             ViewBag.Mark = "User";
-            // ViewBag.Categories = new UserCategoryDao().GetAll();
-
-            return View("Index", users);
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView(user);
+            }
+            return View(user);
         }
 
         public ActionResult Role(int id, int? page, int? item)
@@ -63,15 +62,16 @@ namespace FitnessCenter.Areas.Admin.Controllers
             ViewBag.Mark = "User";
             ViewBag.Roles = new RoleDao().GetAll();
             ViewBag.CurrentRole = id;
-            //if (Request.IsAjaxRequest())
-            //{
-            //    return PartialView("Index", users);
-            //}
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("Index", users);
+            }
             return View("Index", users);
         }
 
         public ActionResult CreateUser()
         {
+            ViewBag.Mark = "User";
             return View();
         }
 
@@ -104,8 +104,16 @@ namespace FitnessCenter.Areas.Admin.Controllers
                     a.Town = fitnessUser.Address.Town;
                     a.Zip = fitnessUser.Address.Zip;
 
-                    uDao.Create(fitnessUser);
-                    aDao.Create(a);
+                    if (uDao.LoginExist(fitnessUser.Login) == false)
+                    {
+                        uDao.Create(fitnessUser);
+                        aDao.Create(a);
+                    }
+                    else
+                    {
+                        TempData["warning"] = "Uživatel pod tímto loginem již existuje!";
+                        return View("CreateUser", fitnessUser);
+                    }
                 }
                 else
                 {
@@ -133,6 +141,7 @@ namespace FitnessCenter.Areas.Admin.Controllers
             roles.Add(rDao.GetById(212));
             roles.Add(rDao.GetById(222));
             ViewBag.Roles = roles;
+            ViewBag.Mark = "User";
 
             return View();
         }
@@ -162,14 +171,18 @@ namespace FitnessCenter.Areas.Admin.Controllers
 
                     fitnessUser.Role = new RoleDao().GetById(roleId);
                     fitnessUser.Password = PasswordHash.CreateHash(fitnessUser.Password);
-                    a.Country = fitnessUser.Address.Country;
-                    a.Street = fitnessUser.Address.Street;
-                    a.StreetNumber = fitnessUser.Address.StreetNumber;
-                    a.Town = fitnessUser.Address.Town;
-                    a.Zip = fitnessUser.Address.Zip;
-
-                    uDao.Create(fitnessUser);
-                    aDao.Create(a);
+                    a = fitnessUser.Address;
+                    if (uDao.LoginExist(fitnessUser.Login) == false)
+                    {
+                        aDao.Create(a);
+                        fitnessUser.Address = a;
+                        uDao.Create(fitnessUser);                      
+                    }
+                    else
+                    {
+                        TempData["warning"] = "Uživatel pod tímto loginem již existuje!";
+                        return View("CreateEmployee", fitnessUser);
+                    }
                 }
                 else
                 {
@@ -182,6 +195,7 @@ namespace FitnessCenter.Areas.Admin.Controllers
             }
             catch (Exception e)
             {
+
                 Console.WriteLine(e);
                 throw;
             }
@@ -191,29 +205,36 @@ namespace FitnessCenter.Areas.Admin.Controllers
         public ActionResult EditAddress(int id)
         {
             UserDao uDao = new UserDao();
+            ViewBag.Mark = "User";
+
             return View(uDao.GetById(id));
         }
 
         [HttpPost]
-        public ActionResult UpdateAddress(FitnessUser fitnessUser)
+        public ActionResult UpdateAddress(FitnessUser fitnessUser, int roleId, int addressId)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
                     UserDao uDao = new UserDao();
+                    RoleDao rDao = new RoleDao();
                     AddressDao aDao = new AddressDao();
                     Address a = new Address();
 
-                    a.Id = fitnessUser.Address.Id;
+                    fitnessUser.Address.Id = addressId;
+                    fitnessUser.Role = rDao.GetById(roleId);
+
+                    a.Id = addressId;
                     a.Country = fitnessUser.Address.Country;
                     a.Street = fitnessUser.Address.Street;
                     a.StreetNumber = fitnessUser.Address.StreetNumber;
                     a.Town = fitnessUser.Address.Town;
                     a.Zip = fitnessUser.Address.Zip;
 
-                    uDao.Update(fitnessUser);
+                    
                     aDao.Update(a);
+                    uDao.Update(fitnessUser);
 
                     TempData["succes"] = "Úprava adresy proběhlo úspěšně.";
                 }
@@ -233,11 +254,12 @@ namespace FitnessCenter.Areas.Admin.Controllers
         public ActionResult EditUser(int id)
         {
             UserDao uDao = new UserDao();
+            ViewBag.Mark = "User";
             return View(uDao.GetById(id));
         }
 
         [HttpPost]
-        public ActionResult UpdateUser(FitnessUser fitnessUser, HttpPostedFileBase picture)
+        public ActionResult UpdateUser(FitnessUser fitnessUser, HttpPostedFileBase picture, int roleId, int addressId)
         {
             try
             {
@@ -259,8 +281,11 @@ namespace FitnessCenter.Areas.Admin.Controllers
                         fitnessUser.SmallImageName = smallImageName;
                     }
                     UserDao uDao = new UserDao();
+                    RoleDao rDao = new RoleDao();
+                    AddressDao aDao = new AddressDao();
 
-                    fitnessUser.Role = new RoleDao().GetById(399);
+                    fitnessUser.Role = rDao.GetById(roleId);
+                    fitnessUser.Address = aDao.GetById(addressId);
 
                     uDao.Update(fitnessUser);
                 }
@@ -286,10 +311,13 @@ namespace FitnessCenter.Areas.Admin.Controllers
         public ActionResult EditEmployee(int id)
         {
             UserDao uDao = new UserDao();
+            ViewBag.Mark = "User";
+
             return View(uDao.GetById(id));
         }
 
-        public ActionResult UpdateEmployee(FitnessUser fitnessUser, HttpPostedFileBase picture, int roleId)
+        [HttpPost]
+        public ActionResult UpdateEmployee(FitnessUser fitnessUser, HttpPostedFileBase picture, int roleId, int addressId)
         {
             try
             {
@@ -311,8 +339,11 @@ namespace FitnessCenter.Areas.Admin.Controllers
                         fitnessUser.SmallImageName = smallImageName;
                     }
                     UserDao uDao = new UserDao();
+                    RoleDao rDao = new RoleDao();
+                    AddressDao aDao = new AddressDao();
 
-                    fitnessUser.Role = new RoleDao().GetById(roleId);
+                    fitnessUser.Role = rDao.GetById(roleId);
+                    fitnessUser.Address = aDao.GetById(addressId);
 
                     uDao.Update(fitnessUser);
                 }
@@ -322,7 +353,7 @@ namespace FitnessCenter.Areas.Admin.Controllers
                 }
                 if (TempData["warning"] == null)
                 {
-                    TempData["succes"] = "Založení zaměstnance proběhlo úspěšně.";
+                    TempData["succes"] = "Úprava zaměstnance proběhlo úspěšně.";
                 }
             }
             catch (Exception e)
@@ -337,19 +368,38 @@ namespace FitnessCenter.Areas.Admin.Controllers
         {
             UserDao uDao = new UserDao();
             FitnessUser fitnessUser = uDao.GetById(id);
+            ViewBag.Mark = "User";
 
             return View(fitnessUser);
         }
 
         [HttpPost]
-        public ActionResult UpdateLog(FitnessUser fitnessUser)
+        public ActionResult UpdateLog(FitnessUser fitnessUser, int roleId, int addressId)
         {
+            UserDao uDao = new UserDao();
+            FitnessUser u = uDao.GetById(fitnessUser.Id);
+            bool LoginExist = false;
+
+            fitnessUser.Address = new AddressDao().GetById(addressId);
+            fitnessUser.Role = new RoleDao().GetById(roleId);
             fitnessUser.Password = PasswordHash.CreateHash(fitnessUser.Password);
 
-            UserDao uDao = new UserDao();
-            uDao.Update(fitnessUser);
 
-            TempData["message-success"] = "Uživatel " + fitnessUser.Name + " byl úspěšně upraven";
+            if(fitnessUser.Login !=u.Login)
+            {
+                LoginExist = uDao.LoginExist(fitnessUser.Login);
+            }
+
+            if (LoginExist==false)
+            {
+                uDao.Update(fitnessUser);
+                TempData["message-success"] = "Uživatel " + fitnessUser.Name + " byl úspěšně upraven";
+            }
+            else
+            {
+                TempData["warning"] = "Uživatel pod tímto loginem již existuje!";
+                return View("EditLog", fitnessUser);
+            }
 
             return RedirectToAction("Logout", "Home");
         }

@@ -5,21 +5,7 @@
 }
 
 <h2>Uživatelé</h2>
-<a href="@Url.Action("CreateUser","User")" class="btn btn-primary">Registrace</a>
-<div class="row">
-    @*vyhledávač*@
-    <div class="col-lg-5 panel-body">
-        @using (Html.BeginForm("Search", "User"))
-        {
-            <div class="input-group">
-                <input type="text" class="form-control" id="search" placeholder="Hledat..." name="phrase">
-                <span class="input-group-btn">
-                    <button class="btn btn-default " type="submit"><span class="glyphicon glyphicon-search"></span></button>
-                </span>
-            </div>
-        }
-    </div>
-</div>
+<a href="@Url.Action("CreateEmployee","User")" class="btn btn-primary">Přidat zaměstnance</a>
 
 <div class="panel">
     @*navigace pro kategorie*@
@@ -29,20 +15,51 @@
         {
             <ul class="nav nav-pills nav-justified">
                 <li role="presentation" class="@(ViewBag.CurrentRole == null ? "active" : "")">
-                    <a href="@Url.Action("Index", "User", new { page = ViewBag.CurrentPage, item = ViewBag.Items })">Všichni uživatelé</a>
-                    @*@Ajax.ActionLink(Convert.ToString("Všichni uživatelé"), "Index", new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })*@
+                    @Ajax.ActionLink("Všichni uživatelé", "Index", new { page = ViewBag.CurrentPage, item = ViewBag.Items }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })
                 </li>
                 @foreach (Role r in ViewBag.Roles)
                 {
                     <li role="presentation" class="@(ViewBag.CurrentRole == r.Id ? "active" : "")">
-                        <a href="@Url.Action("Role", "User", new { id = r.Id, page = ViewBag.CurrentPage, item = ViewBag.Items })">@r.Name</a>
-                        @*@Ajax.ActionLink(r.Name, "Role", new { id = r.Id, page = ViewBag.CurrentPage, item = ViewBag.Items }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })*@
+                        @Ajax.ActionLink(r.Name, "Role", new { id = r.Id, page = ViewBag.CurrentPage, item = ViewBag.Items }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })
                     </li>
                 }
             </ul>
         }
     </div>
 </div>
+<table class="table table-bordered table-hover table-responsive table-condensed">
+    <thead>
+        <tr>
+            <th>Jméno</th>
+            <th>Login</th>
+            <th>Email</th>
+            <th>Datum narozeni</th>
+            <th>Akce</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (FitnessUser u in Model)
+        {
+            <tr>
+                <td>
+                    @u.Name @u.Surname
+                </td>
+                <td>@u.Login</td>
+                <td>@u.EmailAddress</td>
+                <td>@u.Birthdate.ToString("dd/MM/yyyy")</td>
+                <td>
+                    @if (u.Role.Name == "Údržbář" || u.Role.Name == "Trenér")
+                {
+                        @Html.ActionLink(" ", "EditEmployee", new { id = u.Id }, new { @class = "glyphicon glyphicon-pencil btn btn-default" })
+                        @Html.ActionLink(" ", "Delete", new { id = u.Id }, new { @class = "glyphicon glyphicon-pencil btn btn-default" })
+                    }
+                    @Ajax.ActionLink(" ", "Detail", new { id = u.Id }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" }, new { @class = "glyphicon glyphicon-info-sign btn btn-default" })
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
 <div class="dropdown navbar-right">
     <label style="font-size: 10px">Počet záznamů na stránce</label>
     <button class="btn btn-xs btn-primary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -53,7 +70,7 @@
         @for (int i = 5; i <= 20; i *= 2)
         {
             <li class="@(ViewBag.Items == i ? "active" : "") text-right">
-                <a href="@Url.Action("Index", "User", new {page = ViewBag.CurrentPage, item = i})">@i</a>
+                @Ajax.ActionLink(i.ToString(), "Index", new { page = ViewBag.CurrentPage, item = i }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })
             </li>
         }
     </ul>
@@ -66,7 +83,7 @@
             @for (int i = 1; i <= ViewBag.Pages; i++)
             {
                 <li class="@(ViewBag.CurrentPage == i ? "active" : "")">
-                    <a href="@Url.Action("Index", "User", new {page = i, item = ViewBag.Items})">@i</a>
+                    @Ajax.ActionLink(i.ToString(), "Index", new { page = i, item = ViewBag.Items }, new AjaxOptions() { InsertionMode = InsertionMode.Replace, UpdateTargetId = "dynamicContent" })
                 </li>
             }
         </ul>

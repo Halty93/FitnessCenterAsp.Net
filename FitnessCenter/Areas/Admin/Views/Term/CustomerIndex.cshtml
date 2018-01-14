@@ -1,5 +1,6 @@
 ﻿@using DataAccess.Dao
 @using DataAccess.Model
+@using System.Globalization;
 @model IList<Term>
 @{
     ViewBag.Title = "Termíny";
@@ -15,8 +16,8 @@
             <th>Začátek</th>
             <th>Konec</th>
             <th>Volných míst</th>
-            <th>Opakovatelný kurz</th>
             <th>Cena</th>
+            <th>Rezervovat</th>
         </tr>
     </thead>
     <tbody>
@@ -24,10 +25,13 @@
         {
             <tr>
                 <td>@Html.ActionLink(@t.Activity.Name,"Add","Reservation", new { termId = t.Id })    </td>
-                <td>@t.StartTerm</td>
-                <td>@t.EndTerm</td>
-                <td>@t.Capacity - @tDao.GetActualCapacity(t)</td>
-                <td>@t.Activity.Price</td>
+                <td>@t.StartTerm.ToString("d.M.yyyy H:mm")</td>
+                <td>@t.EndTerm.ToString("d.M.yyyy H:mm")</td>
+                <td>@tDao.GetActualCapacity(t)</td>
+                <td>@t.Activity.Price.ToString("C", new CultureInfo("cs-CZ"))</td>
+                <td class="text-center">
+                    @Html.ActionLink(" ", "Add","Reservation", new { id = t.Id }, new { @class = "glyphicon glyphicon-pencil btn btn-default" })
+                </td>
             </tr>
         }
     </tbody>
