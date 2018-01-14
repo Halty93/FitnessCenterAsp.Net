@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitnessCenter", "FitnessCen
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess1\DataAccess.csproj", "{F913DE86-9BAF-47B0-82C2-1EEFA338D00C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTesting", "UnitTesting\UnitTesting.csproj", "{6E185336-FBF6-46A8-9055-7A416B6F3FE7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{F913DE86-9BAF-47B0-82C2-1EEFA338D00C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F913DE86-9BAF-47B0-82C2-1EEFA338D00C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F913DE86-9BAF-47B0-82C2-1EEFA338D00C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E185336-FBF6-46A8-9055-7A416B6F3FE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E185336-FBF6-46A8-9055-7A416B6F3FE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E185336-FBF6-46A8-9055-7A416B6F3FE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E185336-FBF6-46A8-9055-7A416B6F3FE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

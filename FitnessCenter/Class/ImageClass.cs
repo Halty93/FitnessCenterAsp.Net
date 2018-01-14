@@ -10,7 +10,7 @@ namespace FitnessCenter.Class
 {
     public class ImageClass
     {
-        private static Image ScaleImage(Image image, int maxHeight)
+        public static Image ScaleImage(Image image, int maxHeight)
         {
             var ratio = (double)maxHeight / image.Height;
 
